@@ -5,6 +5,7 @@
 #include <fstream>
 #include "Property.h"
 #include "ReadCSV.h"
+#include "AStar.h"
 
 // Comparator function for lower_bound to find closest price
 bool comparePropertyPrice(const Property &prop, double price) {
@@ -30,15 +31,6 @@ int main() {
 
     std::vector<Property> properties = readCSV(filename);
     
-    // Print the first 10 properties or all if less than 10
-    size_t limit = std::min(static_cast<size_t>(10), properties.size());
-    for (size_t i = 0; i < limit; ++i) {
-        std::cout << "Property " << (i + 1) << ": "
-                  << "Price: " << properties[i].price << ", "
-                  << "Latitude: " << properties[i].latitude << ", "
-                  << "Longitude: " << properties[i].longitude << std::endl;
-    }
-
     if (properties.empty()) {
         std::cerr << "Error: No properties loaded from the file.\n";
         return 1;
@@ -68,9 +60,31 @@ int main() {
         closestProperties.push_back(*it);
     }
 
+    if (closestProperties.size() < 2) {
+        std::cerr << "Error: Not enough properties to perform pathfinding.\n";
+        return 1;
+    }
+
+    // Perform A* search between first and last property in the filtered list
+    Property start = closestProperties.front();
+    Property goal = closestProperties.back();
+
+    std::vector<Property> path = aStarSearch(start, goal, closestProperties);
+
+    if (path.empty()) {
+        std::cout << "No path found to the target property.\n";
+    } else {
+        std::cout << "Path found to target property:\n";
+        for (const auto &prop : path) {
+            std::cout << "Price: " << prop.price << ", Latitude: " << prop.latitude << ", Longitude: " << prop.longitude << "\n";
+        }
+    }
+
     // Save selected properties to a CSV file
     writeToCSV("Filtered_Properties.csv", closestProperties);
 
     std::cout << "Filtered properties saved to 'Filtered_Properties.csv'." << std::endl;
+
     return 0;
 }
+ 

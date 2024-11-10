@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -std=c++11
 TARGET = main
 
 # List of source files
-SRCS = main.cpp ReadCSV.cpp A_Star.cpp Dijkstras.cpp
+SRCS = main.cpp ReadCSV.cpp AStar.cpp Dijkstras.cpp Haversine.cpp 
 
 # Object files (each .cpp file gets compiled to a corresponding .o file)
 OBJS = $(SRCS:.cpp=.o)
