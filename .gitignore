@@ -1,0 +1,11 @@
+# Ignore macOS system file
+.DS_Store
+
+# Ignore IDE settings
+.vscode/
+
+# Ignore compiled binaries and object files
+*.o
+main
+PreprocessDataset
+Filtered_Properties.csv
