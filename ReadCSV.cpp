@@ -16,8 +16,8 @@ std::vector<Property> readCSV(const std::string &filename) {
             std::stringstream ss(line);
             Property property;
 
-            // Skip the first column (property number)
-            std::getline(ss, word, ',');
+            // // Skip the first column (property number)
+            // std::getline(ss, word, ',');
           
             std::getline(ss, word, ',');
             property.price = std::stod(word);

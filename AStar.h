@@ -16,4 +16,4 @@ struct Node {
 };
 
 // Function to perform A* search and return the shortest path
-std::vector<Property> aStarSearch(const Property& start, const Property& goal, const std::vector<Property>& properties);
+std::vector<Property> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties);
