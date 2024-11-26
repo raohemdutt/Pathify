@@ -6,6 +6,8 @@
 #include "Property.h"
 #include "ReadCSV.h"
 #include "AStar.h"
+#include "Haversine.h"
+
 
 // Comparator function for lower_bound to find closest price
 bool comparePropertyPrice(const Property &prop, double price) {
@@ -26,8 +28,8 @@ void writeToCSV(const std::string &filename, const std::vector<Property> &proper
 }
 
 int main() {
-    // std::string filename = "DSA Dataset.csv";
-    std::string filename = "/Users/hemduttrao/Downloads/DSA Dataset-main.csv";
+    std::string filename = "Processed_DSA_Dataset.csv";
+    // std::string filename = "/Users/hemduttrao/Downloads/DSA Dataset-main.csv";
 
     std::vector<Property> properties = readCSV(filename);
     
@@ -46,40 +48,65 @@ int main() {
     std::vector<Property>::iterator lowerBound = std::lower_bound(
         properties.begin(), properties.end(), targetPrice, comparePropertyPrice);
 
-    // Collect 500 properties below or equal to the target price
-    std::vector<Property> closestProperties;
-    std::vector<Property>::iterator it = lowerBound;
-    for (int i = 0; i < 500 && it != properties.begin(); ++i) {
-        --it;
-        closestProperties.push_back(*it);
+        // Calculate a combined score for each property and sort
+    std::vector<std::pair<double, Property>> scoredProperties;
+    for (const auto& prop : properties) {
+        double priceDiff = std::abs(prop.price - targetPrice);
+        double geoDist = haversine(currentLatitude, currentLongitude, prop.latitude, prop.longitude);
+        double score = priceDiff + geoDist;  // Combined metric: price proximity + distance
+        scoredProperties.emplace_back(score, prop);
     }
 
-    // Collect 500 properties above or equal to the target price
-    it = lowerBound;
-    for (int i = 0; i < 500 && it != properties.end(); ++i, ++it) {
-        closestProperties.push_back(*it);
+        // Sort by the combined score (lowest score = best match)
+    std::sort(scoredProperties.begin(), scoredProperties.end(), [](const std::pair<double, Property>& a, const std::pair<double, Property>& b) {
+        return a.first < b.first;  // Sort by score
+    });
+    // // Sort properties by price for efficient filtering
+    // std::sort(properties.begin(), properties.end(), [](const Property& a, const Property& b) {
+    //     return a.price < b.price;
+    // });
+
+
+    // Select the top 10000 closest properties based on the combined score
+    std::vector<Property> closestProperties;
+    for (size_t i = 0; i < 10000 && i < scoredProperties.size(); ++i) {
+        closestProperties.push_back(scoredProperties[i].second);
     }
+
 
     if (closestProperties.size() < 2) {
         std::cerr << "Error: Not enough properties to perform pathfinding.\n";
         return 1;
     }
 
-    // Perform A* search between first and last property in the filtered list
-    Property start = closestProperties.front();
-    Property goal = closestProperties.back();
-
-    std::vector<Property> path = aStarSearch(start, goal, closestProperties);
+    // Perform A* search using the updated algorithm
+    std::vector<Property> path = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
 
     if (path.empty()) {
         std::cout << "No path found to the target property.\n";
     } else {
-        std::cout << "Path found to target property:\n";
-        for (const auto &prop : path) {
-            std::cout << "Price: " << prop.price << ", Latitude: " << prop.latitude << ", Longitude: " << prop.longitude << "\n";
-        }
-    }
+        std::cout << "A* Path found to target property:\n";
+            const Property& startNode = path.front();
+    std::cout << "User's Position:\n";
+    std::cout << "Price: " << startNode.price << ", Latitude: " << startNode.latitude << ", Longitude: " << startNode.longitude << "\n\n";
 
+    // Print final destination
+    const Property& finalNode = path.back();
+    std::cout << "Final Destination Found A* by:\n";
+    std::cout << "Price: " << finalNode.price << ", Latitude: " << finalNode.latitude << ", Longitude: " << finalNode.longitude << "\n\n";
+
+    // Print the entire path
+    std::cout << "A* Path Begin:\n";
+    for (size_t i = 0; i < path.size(); ++i) {
+        std::cout << "Price: " << path[i].price
+                  << ", Latitude: " << path[i].latitude
+                  << ", Longitude: " << path[i].longitude;
+        if (i == path.size() - 1) {
+            std::cout << " (Final Node)";
+        }
+        std::cout << "\n";
+    }
+    }
     // Save selected properties to a CSV file
     writeToCSV("Filtered_Properties.csv", closestProperties);
 
