@@ -14,6 +14,11 @@ bool comparePropertyPrice(const Property &prop, double price) {
     return prop.price < price;
 }
 
+bool isInSaudiArabia(double latitude, double longitude) {
+    return (latitude >= 16.0 && latitude <= 32.5 &&
+            longitude >= 34.5 && longitude <= 55.7);
+}
+
 // Function to save selected properties to CSV
 void writeToCSV(const std::string &filename, const std::vector<Property> &properties) {
     std::ofstream file(filename);
@@ -38,9 +43,22 @@ int main() {
         return 1;
     }
 
+    std::cout << "The program finds the best property" << 
+    "by distance and price in Saudi Arabia's prospering"<< 
+    "areas using the A* and Dijkstras algorithm \n";
+
     double currentLatitude, currentLongitude, targetPrice;
-    std::cout << "Enter your current latitude and longitude: ";
+    std::cout << "\n Enter your current latitude and longitude"<<
+    "in Saudi Arabia latitude between 16.0 & 32.5 "<<
+     "and longitude between 34.5 & 55.7: ";
     std::cin >> currentLatitude >> currentLongitude;
+
+        if (!isInSaudiArabia(currentLatitude, currentLongitude)) {
+        std::cerr << "Error: Location is outside Saudi Arabia. "<<
+    "Please enter valid coordinates within Saudi Arabia.\n";
+        return 1;
+    }
+
     std::cout << "Enter your target price: ";
     std::cin >> targetPrice;
 
@@ -79,15 +97,16 @@ int main() {
         return 1;
     }
 
+
     // Perform A* search using the updated algorithm
     std::vector<Property> path = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
 
     if (path.empty()) {
         std::cout << "No path found to the target property.\n";
     } else {
-        std::cout << "A* Path found to target property:\n";
+        // std::cout << "A* Path found to target property:\n";
             const Property& startNode = path.front();
-    std::cout << "User's Position:\n";
+    std::cout << "\nUser's Position:\n";
     std::cout << "Price: " << startNode.price << ", Latitude: " << startNode.latitude << ", Longitude: " << startNode.longitude << "\n\n";
 
     // Print final destination
@@ -96,16 +115,16 @@ int main() {
     std::cout << "Price: " << finalNode.price << ", Latitude: " << finalNode.latitude << ", Longitude: " << finalNode.longitude << "\n\n";
 
     // Print the entire path
-    std::cout << "A* Path Begin:\n";
-    for (size_t i = 0; i < path.size(); ++i) {
-        std::cout << "Price: " << path[i].price
-                  << ", Latitude: " << path[i].latitude
-                  << ", Longitude: " << path[i].longitude;
-        if (i == path.size() - 1) {
-            std::cout << " (Final Node)";
-        }
-        std::cout << "\n";
-    }
+    // std::cout << "A* Path Begin:\n";
+    // for (size_t i = 0; i < path.size(); ++i) {
+    //     std::cout << "Price: " << path[i].price
+    //               << ", Latitude: " << path[i].latitude
+    //               << ", Longitude: " << path[i].longitude;
+    //     if (i == path.size() - 1) {
+    //         std::cout << " (Final Node)";
+    //     }
+    //     std::cout << "\n";
+    // }
     }
     // Save selected properties to a CSV file
     writeToCSV("Filtered_Properties.csv", closestProperties);

@@ -1,61 +1,3 @@
-// // AStar.cpp
-// #include "AStar.h"
-// #include "Haversine.h"
-// #include <unordered_map>
-// #include <set>
-// #include <cmath>
-
-// std::vector<Property> aStarSearch(const Property& start, const Property& goal, const std::vector<Property>& properties) {
-//     std::priority_queue<Node, std::vector<Node>, std::greater<Node>> openSet;
-//     std::unordered_map<int, Node> allNodes;  // Track nodes by ID for efficient access
-
-//     // Initialize the start node
-//     Node startNode = {0, 0.0, haversine(start.latitude, start.longitude, goal.latitude, goal.longitude), start, nullptr};
-//     openSet.push(startNode);
-//     allNodes[0] = startNode;
-
-//     // A set of closed nodes to avoid revisiting
-//     std::set<int> closedSet;
-
-//     // Main A* algorithm loop
-//     while (!openSet.empty()) {
-//         Node current = openSet.top();
-//         openSet.pop();
-
-//         if (current.property.latitude == goal.latitude && current.property.longitude == goal.longitude) {
-//             // Path found, backtrace to retrieve the path
-//             std::vector<Property> path;
-//             while (current.parent != nullptr) {
-//                 path.push_back(current.property);
-//                 current = *current.parent;
-//             }
-//             path.push_back(start);
-//             std::reverse(path.begin(), path.end());
-//             return path;
-//         }
-
-//         closedSet.insert(current.id);
-
-//         // Iterate over neighbors (properties within proximity for simplicity)
-//         for (size_t i = 0; i < properties.size(); ++i) {
-//             if (closedSet.count(i)) continue;
-
-//             double tentativeGCost = current.gCost + haversine(current.property.latitude, current.property.longitude, properties[i].latitude, properties[i].longitude);
-//             double hCost = haversine(properties[i].latitude, properties[i].longitude, goal.latitude, goal.longitude);
-//             Node neighbor = {static_cast<int>(i), tentativeGCost, hCost, properties[i], &allNodes[current.id]};
-
-//             if (!allNodes.count(i) || tentativeGCost < allNodes[i].gCost) {
-//                 openSet.push(neighbor);
-//                 allNodes[i] = neighbor;
-//             }
-//         }
-//     }
-
-//     // Return empty if no path is found
-//     return {};
-// }
-
-
 #include "AStar.h"
 #include "Haversine.h"
 #include <unordered_map>
@@ -63,8 +5,40 @@
 #include <cmath>
 #include <queue>
 #include <algorithm>
+#include <chrono>
+#include <iostream>
+#include <string>
+
+#include <map>
+
+std::map<std::string, std::vector<std::string>> cityMap;  // Map to store city names
+
+std::string getCityName(double latitude, double longitude) {
+    std::string command = "python3 reverse_geocode.py " +
+                          std::to_string(latitude) + " " +
+                          std::to_string(longitude);
+    char buffer[128];
+    std::string result;
+
+    FILE* pipe = popen(command.c_str(), "r");
+    if (!pipe) {
+        std::cerr << "Failed to run Python script.\n";
+        return "Unknown";
+    }
+    while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+        result += buffer;
+    }
+    pclose(pipe);
+
+    // Trim the output (if necessary)
+    result.erase(result.find_last_not_of(" \n\r\t") + 1);
+    return result;
+}
 
 std::vector<Property> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties) {
+    
+    auto startTime = std::chrono::high_resolution_clock::now();
+
     // Priority queue to store nodes to explore
     std::priority_queue<Node, std::vector<Node>, std::greater<Node>> openSet;
     std::unordered_map<int, Node> allNodes;  // Map nodes by ID
@@ -74,6 +48,8 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
     double minDistance = std::numeric_limits<double>::max();
     int closestNodeIndex = -1;
 
+    auto step1Start = std::chrono::high_resolution_clock::now();
+
     for (size_t i = 0; i < properties.size(); ++i) {
         double dist = haversine(startLat, startLon, properties[i].latitude, properties[i].longitude);
         if (dist < minDistance) {
@@ -81,6 +57,8 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
             closestNodeIndex = static_cast<int>(i);
         }
     }
+
+    auto step1End = std::chrono::high_resolution_clock::now();
 
     if (closestNodeIndex == -1) {
         return {};  // No valid nodes found
@@ -98,6 +76,10 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
     Node bestGoalNode;
     bool goalFound = false;
 
+    auto step2End = std::chrono::high_resolution_clock::now();
+
+    auto step3Start = std::chrono::high_resolution_clock::now();
+
     // Step 3: A* Search
     while (!openSet.empty()) {
         Node current = openSet.top();
@@ -108,26 +90,37 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
             bestGoalNode = current;
             goalFound = true;
         }
-
         closedSet.insert(current.id);
 
         // Expand neighbors
-        for (size_t i = 0; i < properties.size(); ++i) {
-            if (closedSet.count(i)) continue;
+        // for (size_t i = 0; i < properties.size(); ++i) {
+        //     if (closedSet.count(i)) continue;
+
+    for (size_t i = 0; i < properties.size(); ++i) {
+        if (closedSet.count(i)) {
+            // std::cout << "  Skipping Node " << i << " (Already Visited)\n";
+            continue;
+        }
 
             double tentativeGCost = current.gCost + haversine(current.property.latitude, current.property.longitude, properties[i].latitude, properties[i].longitude);
             double hCost = std::abs(properties[i].price - targetPrice) + haversine(properties[i].latitude, properties[i].longitude, startLat, startLon);
 
-            Node neighbor = {static_cast<int>(i), tentativeGCost, hCost, properties[i], &allNodes[current.id]};
-
+    Node neighbor = {static_cast<int>(i), tentativeGCost, hCost, properties[i], &allNodes[current.id]};
+    
             if (!allNodes.count(i) || tentativeGCost < allNodes[i].gCost) {
                 openSet.push(neighbor);
                 allNodes[i] = neighbor;
-            }
+            } 
         }
     }
 
+        auto step3End = std::chrono::high_resolution_clock::now();
+
+
     // Step 4: Reconstruct the path
+
+    auto step4Start = std::chrono::high_resolution_clock::now();
+
     std::vector<Property> path;
     Node* currentNode = &bestGoalNode;
 
@@ -139,5 +132,48 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
     // Include the virtual start for completeness
     path.push_back(virtualStart);
     std::reverse(path.begin(), path.end());
+
+    auto step4End = std::chrono::high_resolution_clock::now();
+
+    auto endTime = std::chrono::high_resolution_clock::now();
+
+    // Print time breakdown
+    std::cout << "Time Breakdown (in microseconds):\n";
+    std::cout << "Step 1 (Find Closest Node): " 
+              << std::chrono::duration_cast<std::chrono::microseconds>(step1End - step1Start).count() << "µs\n";
+    std::cout << "Step 2 (Initialize Start Node): " 
+              << std::chrono::duration_cast<std::chrono::microseconds>(step2End - step1End).count() << "µs\n";
+    std::cout << "Step 3 (A* Search Loop): " 
+              << std::chrono::duration_cast<std::chrono::microseconds>(step3End - step3Start).count() << "µs\n";
+    std::cout << "Step 4 (Reconstruct Path): " 
+              << std::chrono::duration_cast<std::chrono::microseconds>(step4End - step4Start).count() << "µs\n";
+    std::cout << "Total Time: " 
+              << std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count() << "µs\n";
+
+    // Clear previous data in the cityMap
+    cityMap.clear();
+
+           std::cout << "\n A* Path :\n";
+    for (size_t i = 0; i < path.size(); ++i) {
+         std::string cityName = getCityName(path[i].latitude, path[i].longitude);
+        path[i].cityName = cityName;  // Add city name to the property
+
+        // Add city to the map
+        if (i == 0) {
+            cityMap["start"].push_back(cityName);  // Start city
+        } else if (i == path.size() - 1) {
+            cityMap["end"].push_back(cityName);  // End city
+        } else {
+            cityMap["intermediary"].push_back(cityName);  // Intermediary cities
+        }
+        std::cout << "City: " << cityName
+                  << ", Price: " << path[i].price
+                  << ", Latitude: " << path[i].latitude
+                  << ", Longitude: " << path[i].longitude << "\n";
+    }
+
+// for (const auto& city : cityMap["intermediary"]) {
+//     std::cout << "Intermediary City: " << city << "\n";
+// }
     return path;
 }
