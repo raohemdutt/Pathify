@@ -1,6 +1,8 @@
 import React from 'react'
 
-export default function Search(curLocation, setCurLocation) {
+export default function Search({curLocation, setCurLocation}) {
+
+  console.log(curLocation.priceBased);
 
   // When submit button clicked setCurlocation Info
   function setLongLat() {
@@ -18,6 +20,30 @@ export default function Search(curLocation, setCurLocation) {
     }
     let output = [longs, lats];
     return output;
+  }
+
+  function setPrice() {
+    let prices = [];
+    for(let i=0; i<=10000000; i+=10000) {
+      prices.push(
+        <option>{i}</option>
+      )
+    }
+    return prices;
+  }
+
+  function setArea() {
+    let area = [];
+    for(let i=0; i<=100000; i+=250) {
+      area.push(
+        <option>{i}</option>
+      )
+    }
+    return area;
+  }
+
+  function renderPriceArea() {
+    return curLocation.priceBased ? setPrice() : setArea();
   }
 
 
@@ -62,11 +88,9 @@ export default function Search(curLocation, setCurLocation) {
               <span className="label-text-alt">$/sq. ft</span>
             </div>
             <select className="select select-bordered">
-              <option disabled selected>Pick Target Price</option>
+              <option disabled selected>Pick Target {curLocation.priceBased === true ? "Price" : "Area"}</option>
               {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
-              <option>$100000</option>
-              <option>$500000</option>
-              <option>$750000</option>
+              {renderPriceArea()}
             </select>
           </label>
         </div>

@@ -16,9 +16,11 @@ function App() {
     }
   });
 
+  console.log(curLocation);
+
   return (
     <>
-      <Home curLocation={curLocation} setCurLocation={setCurLocation}></Home>
+      <Home curLocation={curLocation.CurLocation} setCurLocation={setCurLocation}></Home>
     </>
   );
 }

@@ -4,7 +4,8 @@ import Search from "./Search"
 import Header from "./Header"
 import HomeScreen from '../imgs/pathifyLogo.png'
 
-export default function Home(curLocation, setCurLocation) {
+export default function Home({curLocation, setCurLocation}) {
+    console.log(curLocation);
   return (
     <section class={`bg-cover bg-center h-[100vh] w-[100%] absolute`}  style={{ backgroundImage: `url(${HomeScreen})` }}>
         <Header></Header>
