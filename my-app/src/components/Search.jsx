@@ -1,6 +1,26 @@
 import React from 'react'
 
-export default function Search() {
+export default function Search(curLocation, setCurLocation) {
+
+  // When submit button clicked setCurlocation Info
+  function setLongLat() {
+    let longs = [];
+    let lats = [];
+    for(let i=0; i<=360; i++) {
+      if(i <= 180) {
+        lats.push(
+          <option>{i}</option>
+        )
+      }
+      longs.push(
+        <option>{i}</option>
+      )
+    }
+    let output = [longs, lats];
+    return output;
+  }
+
+
   return (
     <div class="flex flex-col h-screen">
       <section class="flex items-center justify-evenly mt-[35vh]">
@@ -8,14 +28,15 @@ export default function Search() {
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text">Start Location</span>
-              <span className="label-text-alt">City</span>
+              <span className="label-text-alt">Coordinates</span>
             </div>
             <select className="select select-bordered">
-              <option disabled selected>Pick City</option>
-              {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
-              <option>City 1</option>
-              <option>Cityt 2</option>
-              <option>City 3</option>
+              <option disabled selected>Pick Longitude</option>
+              {setLongLat()[0]}
+            </select>
+            <select className="select select-bordered">
+              <option disabled selected>Pick Latitude</option>
+              {setLongLat()[1]}
             </select>
           </label>
         </div>
