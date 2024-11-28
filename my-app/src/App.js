@@ -4,9 +4,6 @@ import { useState } from 'react';
 import Home from './components/Home';
 
 function App() {
-
-
-
   const [curLocation, setCurLocation] = useState({
       long: 10.0,
       lat: 10.0,
@@ -14,8 +11,6 @@ function App() {
       target: 10.00,
     }
 );
-
-  console.log(curLocation);
 
   return (
     <>

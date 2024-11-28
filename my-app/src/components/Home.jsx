@@ -2,7 +2,7 @@ import React from 'react'
 import styles from "../index.css"
 import Search from "./Search"
 import Header from "./Header"
-import HomeScreen from '../imgs/pathifyLogo.png'
+import HomeScreen from '../imgs/homepage_img.jpg'
 
 export default function Home({curLocation, setCurLocation}) {
     console.log(curLocation);

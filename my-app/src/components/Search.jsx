@@ -2,7 +2,6 @@ import React from 'react'
 
 export default function Search({curLocation, setCurLocation}) {
 
-  console.log(curLocation.priceBased);
 
   // When submit button clicked setCurlocation Info
   function setLongLat() {
@@ -47,8 +46,7 @@ export default function Search({curLocation, setCurLocation}) {
   }
 
   const handleSelectChange = (event) => {
-    const value = event.target.value; // Get the selected value
-    console.log("VALUE: " + value);
+    const value = event.target.value;
     if(value === "Price") {
       setCurLocation((prevState) => ({
         ...prevState,
@@ -60,19 +58,18 @@ export default function Search({curLocation, setCurLocation}) {
         ...prevState,
         priceBased: false
       }));
-      console.log("UPDATED: " + curLocation.priceBased);
     }
   }
 
-
+  // For some reason removing labe causes err, may have to use desginated Daisy UI component
   return (
     <div class="flex flex-col h-screen">
       <section class="flex items-center justify-evenly mt-[35vh]">
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text">Start Location</span>
-              <span className="label-text-alt">Coordinates</span>
+              {/* <span className="label-text">Start Location</span>
+              <span className="label-text-alt">Coordinates</span> */}
             </div>
             <select className="select select-bordered">
               <option disabled selected>Pick Longitude</option>
@@ -87,11 +84,11 @@ export default function Search({curLocation, setCurLocation}) {
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text">Search By</span>
-              <span className="label-text-alt">Priority</span>
+              {/* <span className="label-text">Search By</span>
+              <span className="label-text-alt">Priority</span> */}
             </div>
             <select className="select select-bordered" onChange={handleSelectChange}>
-              <option disabled selected>Search Type</option>
+              <option disabled selected>Search By</option>
               {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
               <option value="Price">Price</option>
               <option value="Size">Size</option>
@@ -102,8 +99,8 @@ export default function Search({curLocation, setCurLocation}) {
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text">Target Price/Size</span>
-              <span className="label-text-alt">$/sq. ft</span>
+              {/* <span className="label-text">Target Price/Size</span>
+              <span className="label-text-alt">$/sq. ft</span> */}
             </div>
             <select className="select select-bordered">
               <option disabled selected>Pick Target {curLocation.priceBased === true ? "Price" : "Area"}</option>
@@ -114,7 +111,7 @@ export default function Search({curLocation, setCurLocation}) {
         </div>
         </section>
       <section class="flex justify-center mt-[10vh]">
-        <button className="btn btn-outline btn-primary w-[25vw]">Find Your Path -{`>`}</button>
+        <button className="btn btn-primary text-white w-[25vw]">Find Your Path -{`>`}</button>
       </section>
     </div>
   )
