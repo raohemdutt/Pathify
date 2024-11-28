@@ -45,7 +45,7 @@ export default function Search({curLocation, setCurLocation}) {
     return curLocation.priceBased ? setPrice() : setArea();
   }
 
-  const handleSelectChange = (event) => {
+  const handlePriceAreaChange = (event) => {
     const value = event.target.value;
     if(value === "Price") {
       setCurLocation((prevState) => ({
@@ -61,6 +61,48 @@ export default function Search({curLocation, setCurLocation}) {
     }
   }
 
+  const handleLatChange = (event) => {
+    const value = event.target.value;
+    setCurLocation((prevState) => ({
+      ...prevState,
+      lat: value
+    }));
+  }
+
+  const handleLongChange = (event) => {
+    const value = event.target.value;
+    setCurLocation((prevState) => ({
+      ...prevState,
+      long: value
+    }));
+  }
+
+  const handlePriceAreaValChange = (event) => {
+    const value = event.target.value;
+    setCurLocation((prevState) => ({
+      ...prevState,
+      target: value
+    }));
+  }
+
+  const handleAlgoChange = (event) => {
+    const value = event.target.value;
+    if(value == "Djk") {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        djk: true
+      }));
+    }
+    else {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        djk: false
+      }));
+    }
+  }
+
+  console.log(curLocation);
+
   // For some reason removing labe causes err, may have to use desginated Daisy UI component
   return (
     <div class="flex flex-col h-screen">
@@ -71,11 +113,11 @@ export default function Search({curLocation, setCurLocation}) {
               {/* <span className="label-text">Start Location</span>
               <span className="label-text-alt">Coordinates</span> */}
             </div>
-            <select className="select select-bordered">
+            <select className="select select-bordered" onChange={handleLongChange}>
               <option disabled selected>Pick Longitude</option>
               {setLongLat()[0]}
             </select>
-            <select className="select select-bordered">
+            <select className="select select-bordered" onChange={handleLatChange}>
               <option disabled selected>Pick Latitude</option>
               {setLongLat()[1]}
             </select>
@@ -87,11 +129,17 @@ export default function Search({curLocation, setCurLocation}) {
               {/* <span className="label-text">Search By</span>
               <span className="label-text-alt">Priority</span> */}
             </div>
-            <select className="select select-bordered" onChange={handleSelectChange}>
+            <select className="select select-bordered" onChange={handlePriceAreaChange}>
               <option disabled selected>Search By</option>
               {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
               <option value="Price">Price</option>
               <option value="Size">Size</option>
+            </select>
+            <select className="select select-bordered" onChange={handleAlgoChange}>
+              <option disabled selected>Algorithm</option>
+              {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
+              <option value="Djk">Djkstras</option>
+              <option value="A-Star">A-Star</option>
             </select>
           </label>
         </div>
@@ -102,7 +150,7 @@ export default function Search({curLocation, setCurLocation}) {
               {/* <span className="label-text">Target Price/Size</span>
               <span className="label-text-alt">$/sq. ft</span> */}
             </div>
-            <select className="select select-bordered">
+            <select className="select select-bordered"  onChange={handlePriceAreaValChange}>
               <option disabled selected>Pick Target {curLocation.priceBased === true ? "Price" : "Area"}</option>
               {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
               {renderPriceArea()}

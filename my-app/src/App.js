@@ -9,6 +9,7 @@ function App() {
       lat: 10.0,
       priceBased: true,
       target: 10.00,
+      djk: true,
     }
 );
 
