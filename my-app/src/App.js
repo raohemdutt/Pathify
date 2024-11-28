@@ -8,19 +8,18 @@ function App() {
 
 
   const [curLocation, setCurLocation] = useState({
-    CurLocation: {
       long: 10.0,
       lat: 10.0,
       priceBased: true,
       target: 10.00,
     }
-  });
+);
 
   console.log(curLocation);
 
   return (
     <>
-      <Home curLocation={curLocation.CurLocation} setCurLocation={setCurLocation}></Home>
+      <Home curLocation={curLocation} setCurLocation={setCurLocation}></Home>
     </>
   );
 }

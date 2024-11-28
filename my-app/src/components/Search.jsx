@@ -46,6 +46,24 @@ export default function Search({curLocation, setCurLocation}) {
     return curLocation.priceBased ? setPrice() : setArea();
   }
 
+  const handleSelectChange = (event) => {
+    const value = event.target.value; // Get the selected value
+    console.log("VALUE: " + value);
+    if(value === "Price") {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        priceBased: true
+      }));
+    }
+    else {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        priceBased: false
+      }));
+      console.log("UPDATED: " + curLocation.priceBased);
+    }
+  }
+
 
   return (
     <div class="flex flex-col h-screen">
@@ -72,11 +90,11 @@ export default function Search({curLocation, setCurLocation}) {
               <span className="label-text">Search By</span>
               <span className="label-text-alt">Priority</span>
             </div>
-            <select className="select select-bordered">
+            <select className="select select-bordered" onChange={handleSelectChange}>
               <option disabled selected>Search Type</option>
               {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
-              <option>Price</option>
-              <option>Size</option>
+              <option value="Price">Price</option>
+              <option value="Size">Size</option>
             </select>
           </label>
         </div>
