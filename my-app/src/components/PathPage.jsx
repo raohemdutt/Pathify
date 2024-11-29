@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import MapWithRoute from "./Map.jsx"
 
 export default function PathPage({curLocation}) {
 
@@ -28,6 +29,8 @@ export default function PathPage({curLocation}) {
                             </div>
                         </div>
                         {/* Lopp through all past nodes and insert embed, then isnert embed on last location */}
+                        {/* <iframe width="600" height="450" style={{"border":0}} loading="lazy" allowfullscreen src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJQatg2-VAXz4RlsWijU8N6EQ&key=AIzaSyAxUna0O0shXH2e2Uz9fLaBTSY8oxIezsM"></iframe> */}
+                        <MapWithRoute latStart={curLocation.lat} longStart={curLocation.long} latEnd={optPropData.lat} longEnd={optPropData.long}></MapWithRoute>
                 </div>
             </div>
         </div>
