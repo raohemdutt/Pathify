@@ -65,7 +65,7 @@ export default function Search({curLocation, setCurLocation}) {
     const value = event.target.value;
     setCurLocation((prevState) => ({
       ...prevState,
-      lat: value
+      lat: parseFloat(value)
     }));
   }
 
@@ -73,7 +73,7 @@ export default function Search({curLocation, setCurLocation}) {
     const value = event.target.value;
     setCurLocation((prevState) => ({
       ...prevState,
-      long: value
+      long: parseFloat(value)
     }));
   }
 
@@ -134,17 +134,18 @@ export default function Search({curLocation, setCurLocation}) {
   // For some reason removing labe causes err, may have to use desginated Daisy UI component
   return (
     <div class="flex flex-col h-screen items-center">
-      <section class="flex items-center justify-evenly rounded-md w-[85%] bg-[#f0ffffc9] mt-[30vh] h-[40vh]">
+      <section class="flex items-center justify-evenly rounded-md w-[85%] bg-[#f0ffffc9] mt-[25vh] h-[45vh]">
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              {/* <span className="label-text">Start Location</span>
-              <span className="label-text-alt">Coordinates</span> */}
+              {/* <span className="label-text">Start Location</span> */}
+              <span className="label-text-alt">Coordinates Only</span>
             </div>
-            <select className="select select-bordered" onChange={handleLongChange}>
+            <input type="text" placeholder="Longitude" className="input input-bordered w-full max-w-xs" onChange={handleLongChange} />
+            {/* <select className="select select-bordered" onChange={handleLongChange}>
               <option disabled selected>Pick Longitude</option>
               {setLongLat()[0]}
-            </select>
+            </select> */}
           <section class="mb-[2vh]">
             <div className="form-control">
             <label className="label cursor-pointer">
@@ -159,10 +160,15 @@ export default function Search({curLocation, setCurLocation}) {
               </label>
           </div>
           </section>
-            <select className="select select-bordered" onChange={handleLatChange}>
+            <div className="label">
+              {/* <span className="label-text">Start Location</span> */}
+              <span className="label-text-alt">Coordinates Only</span>
+            </div>
+            <input type="text" placeholder="Latitude" className="input input-bordered w-full max-w-xs" onChange={handleLatChange} />
+            {/* <select className="select select-bordered" onChange={handleLatChange}>
               <option disabled selected>Pick Latitude</option>
               {setLongLat()[1]}
-            </select>
+            </select> */}
             <section>
             <div className="form-control">
             <label className="label cursor-pointer">
