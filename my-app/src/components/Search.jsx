@@ -25,7 +25,7 @@ export default function Search({curLocation, setCurLocation}) {
     let prices = [];
     for(let i=0; i<=10000000; i+=10000) {
       prices.push(
-        <option>{i}</option>
+        <option>${i}</option>
       )
     }
     return prices;
@@ -35,7 +35,7 @@ export default function Search({curLocation, setCurLocation}) {
     let area = [];
     for(let i=0; i<=100000; i+=250) {
       area.push(
-        <option>{i}</option>
+        <option>{i}ft²</option>
       )
     }
     return area;
@@ -211,6 +211,10 @@ export default function Search({curLocation, setCurLocation}) {
             <div className="label">
               {/* <span className="label-text">Target Price/Size</span>
               <span className="label-text-alt">$/sq. ft</span> */}
+            </div>
+            <div className="label">
+              {/* <span className="label-text">Start Location</span> */}
+              <span className="label-text-alt">Optimal Value</span>
             </div>
             <select className="select select-bordered"  onChange={handlePriceAreaValChange}>
               <option disabled selected>Pick Target {curLocation.priceBased === true ? "Price" : "Area"}</option>
