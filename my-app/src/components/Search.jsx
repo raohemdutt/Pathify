@@ -159,7 +159,7 @@ export default function Search({curLocation, setCurLocation}) {
         </div>
         </section>
       <section class="flex justify-center mt-[10vh]">
-        <button className="btn btn-primary text-white w-[25vw]">Find Your Path -{`>`}</button>
+        <button onClick={()=>document.getElementById('pathModal').showModal()} className="btn btn-primary text-white w-[25vw]">Find Your Path -{`>`}</button>
       </section>
     </div>
   )
