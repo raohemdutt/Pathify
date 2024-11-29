@@ -138,11 +138,7 @@ const MapWithRoute = ({ latStart, longStart, latEnd, longEnd }) => {
   }, [latStart, longStart, latEnd, longEnd]);
 
   return (
-    <div
-      ref={mapRef}
-      style={{ width: "100%", height: "500px" }}
-      id="google-map"
-    ></div>
+    <div ref={mapRef} style={{ width: "100%", height: "53vh" }} id="google-map" class=""></div>
   );
 };
 
