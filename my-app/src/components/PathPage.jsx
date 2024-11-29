@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function PathPage() {
+export default function PathPage({curLocation}) {
+
+  const [optPropData, setOptPropData] = useState({
+    long: 0,
+    lat: 0,
+    name: 0,
+    djkTime: 0,
+    AStrTime: 0,
+    PrevNodes: [[24.5, 34.5],[23.4,34.5],[24.6, 56.4],[34.2,53.6],[35.4, 64.3]]
+  });  
+
   return (
     <>
         <div className="modal-box bg-primary max-w-[100vw] w-[70vw] h-[32.2vw] 2xl:h-[30.9vw]">
@@ -10,8 +20,14 @@ export default function PathPage() {
             </figure> */}
                 <div className="card-body">
                         <div className="modal-action flex flex-col justify-center mt-[0] 2xl:mt-[3vw]">
-                            Path Page
+                            <div>
+                                Found an Optimal Property in {curLocation.djk === true ? optPropData.djkTime : optPropData.AStrTime} using {curLocation.djk === true ? "Djkstra's" : "A-Star's"} Algorithm at Lat: {optPropData.lat} Long: {optPropData.long} 
+                            </div>
+                            <div>
+                                <p style={{color: "#fb3030"}}> {curLocation.djk === true ? "Djkstra's" : "A-Star's"} Algorithm took {curLocation.djk === true ? optPropData.AStrTime : optPropData.djkTime} time </p>
+                            </div>
                         </div>
+                        {/* Lopp through all past nodes and insert embed, then isnert embed on last location */}
                 </div>
             </div>
         </div>
