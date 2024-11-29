@@ -7,8 +7,8 @@ export default function Search({curLocation, setCurLocation}) {
   function setLongLat() {
     let longs = [];
     let lats = [];
-    for(let i=0; i<=360; i++) {
-      if(i <= 180) {
+    for(let i=0; i<=180; i++) {
+      if(i <= 90) {
         lats.push(
           <option>{i}</option>
         )
@@ -101,12 +101,40 @@ export default function Search({curLocation, setCurLocation}) {
     }
   }
 
+  const handleDirChange = (event, dir) => {
+    // const value = event.target.value;
+    if(dir === "North") {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        dirNS: "North"
+      }));
+    }
+    else if(dir === "South") {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        dirNS: "South"
+      }));
+    }
+    else if(dir === "West") {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        dirWE: "West"
+      }));
+    }
+    else if (dir == "East") {
+      setCurLocation((prevState) => ({
+        ...prevState,
+        dirWE: "East"
+      }));
+    }
+  } 
+
   console.log(curLocation);
 
   // For some reason removing labe causes err, may have to use desginated Daisy UI component
   return (
-    <div class="flex flex-col h-screen">
-      <section class="flex items-center justify-evenly mt-[35vh]">
+    <div class="flex flex-col h-screen items-center">
+      <section class="flex items-center justify-evenly rounded-md w-[85%] bg-[#f0ffffc9] mt-[30vh] h-[40vh]">
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
@@ -117,10 +145,38 @@ export default function Search({curLocation, setCurLocation}) {
               <option disabled selected>Pick Longitude</option>
               {setLongLat()[0]}
             </select>
+          <section class="mb-[2vh]">
+            <div className="form-control">
+            <label className="label cursor-pointer">
+                <span className="label-text">West</span>
+                <input type="radio" name="radio-10" className="radio checked:bg-red-500"  onChange={(e) => handleDirChange(e, "West")} defaultChecked/>
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label cursor-pointer">
+                <span className="label-text">East</span>
+                <input type="radio" name="radio-10" className="radio checked:bg-blue-500"  onChange={(e) => handleDirChange(e, "East")}/>
+              </label>
+          </div>
+          </section>
             <select className="select select-bordered" onChange={handleLatChange}>
               <option disabled selected>Pick Latitude</option>
               {setLongLat()[1]}
             </select>
+            <section>
+            <div className="form-control">
+            <label className="label cursor-pointer">
+                <span className="label-text">North</span>
+                <input type="radio" name="radio-11" className="radio checked:bg-red-500" onChange={(e) => handleDirChange(e, "North")} defaultChecked />
+            </label>
+            </div>
+            <div className="form-control">
+              <label className="label cursor-pointer">
+                <span className="label-text">South</span>
+                <input type="radio" name="radio-11" className="radio checked:bg-blue-500"  onChange={(e) => handleDirChange(e, "South")}/>
+              </label>
+          </div>
+          </section>
           </label>
         </div>
         <div class="w-[17vw]">
