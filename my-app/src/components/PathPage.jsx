@@ -14,7 +14,7 @@ export default function PathPage({curLocation}) {
 
   return (
     <>
-        <div className="modal-box bg-primary max-w-[100vw] w-[80vw] h-[55vw] 2xl:h-[30.9vw]">
+        <div className="modal-box bg-primary max-w-[100vw] w-[80vw] h-[41vw] 2xl:h-[30.9vw]">
             <div className="card lg:card-side bg-base-100 shadow-xl">
             {/* <figure>
                 <Image src={glasses_wall_pic} className='w-[35vw] h-[29.03vw]'></Image>
