@@ -8,7 +8,6 @@
 #include "AStar.h"
 #include "Haversine.h"
 
-
 // Comparator function for lower_bound to find closest price
 bool comparePropertyPrice(const Property &prop, double price) {
     return prop.price < price;
