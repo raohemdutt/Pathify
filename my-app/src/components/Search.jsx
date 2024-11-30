@@ -104,28 +104,68 @@ export default function Search({curLocation, setCurLocation}) {
   const handleDirChange = (event, dir) => {
     // const value = event.target.value;
     if(dir === "North") {
-      setCurLocation((prevState) => ({
-        ...prevState,
-        dirNS: "North"
-      }));
+      if(curLocation.lat < 0) {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          lat: Math.abs(curLocation.lat),
+          dirNS: "North"
+        }));
+      }
+      else {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          dirNS: "North"
+        }));
+      }
     }
     else if(dir === "South") {
-      setCurLocation((prevState) => ({
-        ...prevState,
-        dirNS: "South"
-      }));
+      if(curLocation.lat > 0) {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          lat: -Math.abs(curLocation.lat),
+          dirNS: "South"
+        }));
+      }
+      else {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          lat: curLocation.lat,
+          dirNS: "South"
+        }));
+      }
     }
     else if(dir === "West") {
-      setCurLocation((prevState) => ({
-        ...prevState,
-        dirWE: "West"
-      }));
+      if(curLocation.long > 0) {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          long: -Math.abs(curLocation.long),
+          dirWE: "West"
+        }));
+      }
+      else {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          long: curLocation.long,
+          dirWE: "West"
+        }));
+      }
     }
     else if (dir == "East") {
-      setCurLocation((prevState) => ({
-        ...prevState,
-        dirWE: "East"
-      }));
+      if(curLocation.long < 0) {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          
+          long: Math.abs(curLocation.long),
+          dirWE: "East"
+        }));
+      }
+      else {
+        setCurLocation((prevState) => ({
+          ...prevState,
+          long: curLocation.long,
+          dirWE: "East"
+        }));
+      }
     }
   } 
 

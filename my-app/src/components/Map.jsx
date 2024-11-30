@@ -111,8 +111,8 @@ const MapWithRoute = ({ latStart, longStart, latEnd, longEnd }) => {
 
     // Add markers for both locations
     const markers = [
-      { position: { lat: latStart, lng: longStart }, label: "Start" },
-      { position: { lat: latEnd, lng: longEnd }, label: "End" },
+      { position: { lat: latStart, lng: longStart }, label: "Target" },
+      { position: { lat: latEnd, lng: longEnd }, label: "Found" },
     ];
 
     markers.forEach(({ position, label }) => {
