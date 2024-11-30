@@ -13,13 +13,13 @@ const MapWithRoute = ({ latStart, longStart, latEnd, longEnd }) => {
     // Initialize the map
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: latStart, lng: longStart }, // Centered at the first location
-      zoom: 7, // Adjust zoom level as needed
+      zoom: 4, // Adjust zoom level as needed
     });
 
     // Add markers for both locations
     const markers = [
-      { position: { lat: latStart, lng: longStart }, label: "Target" },
-      { position: { lat: latEnd, lng: longEnd }, label: "Found" },
+      { position: { lat: latStart, lng: longStart }, label: "Start" },
+      { position: { lat: latEnd, lng: longEnd }, label: "End" },
     ];
 
     markers.forEach(({ position, label }) => {
