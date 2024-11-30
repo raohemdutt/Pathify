@@ -20,12 +20,12 @@ export default function PathPage({curLocation}) {
                 <Image src={glasses_wall_pic} className='w-[35vw] h-[29.03vw]'></Image>
             </figure> */}
                 <div className="card-body">
-                        <div className="modal-action flex flex-col justify-center mt-[0] 2xl:mt-[3vw]">
-                            <div>
-                                Found an Optimal Property in {curLocation.djk === true ? optPropData.djkTime : optPropData.AStrTime} using {curLocation.djk === true ? "Djkstra's" : "A-Star's"} Algorithm at Lat: {optPropData.lat} Long: {optPropData.long} 
+                        <div className="modal-action flex flex-col justify-center items-center mt-[0] 2xl:mt-[3vw]">
+                            <div class="font-medium">
+                                Found an Optimal Property in {curLocation.djk === true ? optPropData.djkTime : optPropData.AStrTime} seconds using {curLocation.djk === true ? "Djkstra's" : "A-Star's"} Algorithm at {optPropData.lat}° Latitude and {optPropData.long}° Longitude 
                             </div>
-                            <div>
-                                <p style={{color: "#fb3030"}}> {curLocation.djk === true ? "Djkstra's" : "A-Star's"} Algorithm took {curLocation.djk === true ? optPropData.AStrTime : optPropData.djkTime} time </p>
+                            <div class="font-semibold" style={{color: "#fb3030", margin: "inherit"}}>
+                                {curLocation.djk === true ? "A-Star's" : "Djkstra's"} Algorithm took {curLocation.djk === true ? optPropData.AStrTime : optPropData.djkTime} seconds
                             </div>
                         </div>
                         {/* Lopp through all past nodes and insert embed, then isnert embed on last location */}
