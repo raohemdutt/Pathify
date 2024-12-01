@@ -156,7 +156,7 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
            std::cout << "\n A* Path :\n";
     for (size_t i = 0; i < path.size(); ++i) {
          std::string cityName = getCityName(path[i].latitude, path[i].longitude);
-        path[i].cityName = cityName;  // Add city name to the property
+        //path[i].cityName = cityName;  // Add city name to the property
 
         // Add city to the map
         if (i == 0) {

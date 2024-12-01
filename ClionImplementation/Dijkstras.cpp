@@ -3,7 +3,8 @@
 #include <set>
 #include <queue>
 #include "Dijkstras.h"
-
+#include <limits>
+#include <cmath>
 
 std::vector<Property> dijkstras(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties) {
   std::vector<Property> finalPath;
@@ -51,7 +52,7 @@ std::vector<Property> dijkstras(double startLat, double startLon, double targetP
 
   //We constructed a large map
 //Now Run Dijkstra
-  std::cout<<"test"<<std::endl;
+
 
 
   return finalPath;
