@@ -16,12 +16,13 @@ export default function PathPage({curLocation}) {
 
   // Manage interval for updating curIdx
   useEffect(() => {
+    console.log("Currect idx is: " + curIdx);
     
     if (curIdx >= optPropData.PrevNodes.length) return; // Stop interval if all nodes are processed
 
     const intervalId = setTimeout(() => {
       setCurIdx((prevIdx) => {
-        if (prevIdx <= optPropData.PrevNodes.length - 1) {
+        if (prevIdx < optPropData.PrevNodes.length - 1) {
           return prevIdx + 1;
         } else {
           clearInterval(intervalId); // Clear the interval when reaching the end
@@ -47,7 +48,7 @@ export default function PathPage({curLocation}) {
                             </div>
                         </div>
                         {/* Render MapWithRoute for the current node */}
-                        {curIdx < optPropData.PrevNodes.length && (
+                        {curIdx < optPropData.PrevNodes.length-1 && (
                         <MapWithRoute
                             latStart={optPropData.PrevNodes[curIdx][0]}
                             longStart={optPropData.PrevNodes[curIdx][1]}
