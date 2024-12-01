@@ -1,0 +1,18 @@
+# ninja log v6
+10	2766	1733077361481796289	CMakeFiles/untitled2.dir/main.cpp.o	e59d24c156e20152
+15	770	1733077162703147017	CMakeFiles/untitled2.dir/ReadCSV.cpp.o	63e5aa25b5561a5c
+2767	2809	1733077364238733317	untitled2	10bec8acf6f70eeb
+2	54	1733077450345981906	build.ninja	868a7c020852605b
+5	72	1732986065551028034	CMakeFiles/untitled2.dir/Haversine.cpp.o	582128d3eeaca7c3
+5	431	1732986065551151783	CMakeFiles/untitled2.dir/AStar.cpp.o	c1798b9078b053fa
+11	336	1733077569733766284	CMakeFiles/untitled2.dir/Haversine.cpp.o	3728fe4d49b79abc
+10	734	1733077569733220866	CMakeFiles/untitled2.dir/ReadCSV.cpp.o	c1e7ee6ede0111d2
+11	776	1733077569734067826	CMakeFiles/untitled2.dir/AStar.cpp.o	10a4e9a2b8d99b0f
+10	3451	1733077569732585447	CMakeFiles/untitled2.dir/main.cpp.o	b4b1e9fdffcba918
+3451	3622	1733077573173576061	untitled2	10bec8acf6f70eeb
+13	3348	1733077729591418925	CMakeFiles/untitled2.dir/main.cpp.o	b4b1e9fdffcba918
+3348	3512	1733077732926489709	untitled2	10bec8acf6f70eeb
+16	3026	1733078055167417217	CMakeFiles/untitled2.dir/main.cpp.o	b4b1e9fdffcba918
+3026	3191	1733078058177179823	untitled2	10bec8acf6f70eeb
+9	3187	1733078791645661501	CMakeFiles/untitled2.dir/main.cpp.o	b4b1e9fdffcba918
+3188	3351	1733078794824487214	untitled2	10bec8acf6f70eeb
