@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import MapWithRoute from "./Map.jsx"
 
-export default function PathPage({curLocation}) {
+export default function PathPage({curIdx, setCurIdx, curLocation}) {
 
   const [optPropData, setOptPropData] = useState({
     long: 0,
@@ -12,7 +12,7 @@ export default function PathPage({curLocation}) {
     PrevNodes: [[24.5, 34.5],[23.4,34.5],[24.6, 56.4],[34.2,53.6],[35.4, 64.3]]
   });  
 
-  const [curIdx, setCurIdx] = useState(0);
+  
 
   // Manage interval for updating curIdx
   useEffect(() => {

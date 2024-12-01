@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Search({curLocation, setCurLocation}) {
+export default function Search({setPathCurIdx, curLocation, setCurLocation}) {
 
 
   // When submit button clicked setCurlocation Info
@@ -167,7 +167,12 @@ export default function Search({curLocation, setCurLocation}) {
         }));
       }
     }
-  } 
+  }
+
+  const findPathButton = () => {
+    setPathCurIdx(0);
+    document.getElementById('pathModal').showModal()
+  }
 
   console.log(curLocation);
 
@@ -265,7 +270,7 @@ export default function Search({curLocation, setCurLocation}) {
         </div>
         </section>
       <section class="flex justify-center mt-[10vh]">
-        <button onClick={()=>document.getElementById('pathModal').showModal()} className="btn btn-primary text-white w-[25vw]">Find Your Path -{`>`}</button>
+        <button onClick={()=>findPathButton()} className="btn btn-primary text-white w-[25vw]">Find Your Path -{`>`}</button>
       </section>
     </div>
   )
