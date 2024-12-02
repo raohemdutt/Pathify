@@ -25,8 +25,6 @@
   <component name="ChangeListManager">
     <list default="true" id="09d36487-2782-4494-890b-1a79588ddd29" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AStar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AStar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dijkstras.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Dijkstras.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
@@ -125,7 +123,7 @@
       <updated>1732654576020</updated>
       <workItem from="1732654577196" duration="31176000" />
       <workItem from="1733077449599" duration="53000" />
-      <workItem from="1733077565731" duration="6349000" />
+      <workItem from="1733077565731" duration="13871000" />
     </task>
     <servers />
   </component>
@@ -143,11 +141,6 @@
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Dijkstras.cpp</url>
-          <line>20</line>
-          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

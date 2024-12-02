@@ -91,7 +91,7 @@ int main() {
             return crow::response(400, error_response);
         }
 
-        //std::vector<Property> dijkstraPath = dijkstras(currentLatitude, currentLongitude, targetPrice, closestProperties);
+        std::vector<Property> dijkstraPath = dijkstras(currentLatitude, currentLongitude, targetPrice, closestProperties);
         // Perform A* search using the updated algorithm
         std::vector<Property> path = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
 
