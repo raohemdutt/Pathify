@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Search({setPathCurIdx, curLocation, setCurLocation}) {
+export default function Search({setPathCurIdx, curLocation, setCurLocation, optPropData, setOptPropData}) {
 
 
   // When submit button clicked setCurlocation Info
@@ -169,8 +169,24 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation}) {
     }
   }
 
-  const findPathButton = () => {
+  const findPathButton = async () => {
     setPathCurIdx(0);
+    // Should put laoding wheel here
+    const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}`);
+    // A star gives three nodes with end being target
+    const data = await response.json();
+    console.log(data)
+    console.log("Data on line 178 should be above this line");
+    setOptPropData((prevState) => ({
+      ...prevState,
+      long: data.path[data.path.length-1].longitude,
+      lat: data.path[data.path.length-1].latitude,
+      djkTime: 0, // Waiting from Josh JSON
+      AstrTime: 0, // Waiting from Josh JSON
+      target: 10.00, // Waiting from Josh JSON
+      PrevNodes: [[data.path[0].longitude,data.path[0].latitude],[data.path[1].longitude,data.path[1].latitude]],
+    }));
+    console.log(optPropData);
     document.getElementById('pathModal').showModal()
   }
 

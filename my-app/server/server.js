@@ -22,9 +22,12 @@ let exampleData = [
 },
 ];
 
+const naem = "j";
+
 // GET endpoint
-app.get("/api/data", (req, res) => {
-  res.json(exampleData); // Send the data as JSON
+app.get(`/process?lat=${naem}&lng=${naem}&price=${naem}`, (req, res) => {
+//   res.json(exampleData); // Send the data as JSON
+//   var long = exampleData.path[]
 });
 
 // Start the server
