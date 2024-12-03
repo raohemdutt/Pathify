@@ -186,7 +186,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
       djkTime: 0, // Waiting from Josh JSON
       AstrTime: 0, // Waiting from Josh JSON
       target: 10.00, // Waiting from Josh JSON
-      PrevNodes: [[data.path[0].longitude,data.path[0].latitude],[data.path[1].longitude,data.path[1].latitude]],
+      PrevNodes: [[data.path[0].latitude, data.path[0].longitude],[data.path[1].latitude, data.path[1].longitude]],
     }));
     console.log(optPropData);
     document.getElementById('pathModal').showModal()

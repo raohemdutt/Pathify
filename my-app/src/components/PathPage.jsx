@@ -47,10 +47,10 @@ export default function PathPage({curIdx, setCurIdx, curLocation, optPropData, s
                         {/* Render MapWithRoute for the current node */}
                         {curIdx < optPropData.PrevNodes.length && (
                         <MapWithRoute
-                            latStart={optPropData.PrevNodes[curIdx][0]}
-                            longStart={optPropData.PrevNodes[curIdx][1]}
-                            latEnd={optPropData.lat}
-                            longEnd={optPropData.long}
+                            latStart={curLocation.lat}
+                            longStart={curLocation.long}
+                            latEnd={optPropData.PrevNodes[curIdx][0]}
+                            longEnd={optPropData.PrevNodes[curIdx][1]}
                         />
                         )}
                         {/* Render final location map once the interval finishes */}
