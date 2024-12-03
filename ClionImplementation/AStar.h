@@ -15,5 +15,14 @@ struct Node {
     bool operator>(const Node& other) const { return fCost() > other.fCost(); }
 };
 
+struct TimingInfo {
+    long long step1Time;
+    long long step2Time;
+    long long step3Time;
+    long long step4Time;
+    long long totalTime;
+};
+
+
 // Function to perform A* search and return the shortest path
-std::vector<Property> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties);
+std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties);

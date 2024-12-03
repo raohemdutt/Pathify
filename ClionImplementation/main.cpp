@@ -98,14 +98,14 @@ int main() {
         }
 
         auto dijkstraStart = std::chrono::high_resolution_clock::now();
-        std::vector<Property> dijkstraPath = dijkstras(currentLatitude, currentLongitude, targetPrice, closestProperties);
+        //std::vector<Property> dijkstraPath = dijkstras(currentLatitude, currentLongitude, targetPrice, closestProperties);
         auto dijkstraEnd = std::chrono::high_resolution_clock::now();
-        auto seconds = std::chrono::duration_cast<std::chrono::seconds>(dijkstraEnd - dijkstraStart);
+        auto dseconds = std::chrono::duration_cast<std::chrono::milliseconds>(dijkstraEnd - dijkstraStart);
         // Perform A* search using the updated algorithm
-        auto astarStart = std::chrono::high_resolution_clock::now();
-        std::vector<Property> path = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
-        auto astarEnd = std::chrono::high_resolution_clock::now();
-        auto astarseconds = std::chrono::duration_cast<std::chrono::seconds>(astarEnd - astarStart);
+        std::tuple<std::vector<Property>, TimingInfo> result = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
+        std::vector<Property> path = std::get<0>(result);
+        TimingInfo timings = std::get<1>(result);
+
 
         if (path.empty()) {
         std::cout << "No path found to the target property.\n";
@@ -139,7 +139,11 @@ int main() {
                     propertyJson["price"] = path[i].price;
                     propertyJson["latitude"] = path[i].latitude;
                     propertyJson["longitude"] = path[i].longitude;
-                    propertyJson["seconds"] = astarseconds.count();
+                    propertyJson["step1micros"] = timings.step1Time;
+                    propertyJson["step2micros"] = timings.step2Time;
+                    propertyJson["step3micros"] = timings.step3Time;
+                    propertyJson["step4micros"] = timings.step4Time;
+                    propertyJson["totalmicros"] = timings.totalTime;
                     if (i == 0) {
                         propertyJson["type"] = "start";
                     } else if (i == path.size() - 1) {
@@ -151,7 +155,8 @@ int main() {
                 }
                 crowResponse["path"] = std::move(pathJson);
             }
-
+/*
+ *To Fix
             if(type == "d") {
                 //do dijkstras
                 crow::json::wvalue::list pathJson;
@@ -160,7 +165,7 @@ int main() {
                     propertyJson["price"] = dijkstraPath[i].price;
                     propertyJson["latitude"] = dijkstraPath[i].latitude;
                     propertyJson["longitude"] = dijkstraPath[i].longitude;
-                    propertyJson["seconds"] = seconds.count();
+                    propertyJson["seconds"] = dseconds.count();
                     if (i == 0) {
                         propertyJson["type"] = "start";
                     } else if (i == path.size() - 1) {
@@ -173,7 +178,7 @@ int main() {
                 crowResponse["path"] = std::move(pathJson);
             }
 
-
+*/
 
 
 

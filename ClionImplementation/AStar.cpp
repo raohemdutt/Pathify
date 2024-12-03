@@ -11,6 +11,8 @@
 
 #include <map>
 
+
+
 std::map<std::string, std::vector<std::string>> cityMap;  // Map to store city names
 
 std::string getCityName(double latitude, double longitude) {
@@ -35,7 +37,7 @@ std::string getCityName(double latitude, double longitude) {
     return result;
 }
 
-std::vector<Property> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties) {
+std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties) {
     
     auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -138,6 +140,14 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
     auto endTime = std::chrono::high_resolution_clock::now();
 
     // Print time breakdown
+    TimingInfo timings;
+    timings.step1Time = std::chrono::duration_cast<std::chrono::microseconds>(step1End - step1Start).count();
+    timings.step2Time = std::chrono::duration_cast<std::chrono::microseconds>(step2End - step1End).count();
+    timings.step3Time = std::chrono::duration_cast<std::chrono::microseconds>(step3End - step3Start).count();
+    timings.step4Time = std::chrono::duration_cast<std::chrono::microseconds>(step4End - step4Start).count();
+    timings.totalTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+
+
     std::cout << "Time Breakdown (in microseconds):\n";
     std::cout << "Step 1 (Find Closest Node): " 
               << std::chrono::duration_cast<std::chrono::microseconds>(step1End - step1Start).count() << "µs\n";
@@ -175,5 +185,5 @@ std::vector<Property> aStarSearch(double startLat, double startLon, double targe
 // for (const auto& city : cityMap["intermediary"]) {
 //     std::cout << "Intermediary City: " << city << "\n";
 // }
-    return path;
+    return {path, timings};
 }
