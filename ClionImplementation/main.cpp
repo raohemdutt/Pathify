@@ -125,7 +125,7 @@ int main() {
            for (size_t i = 0; i < path.size(); ++i) {
                std::cout << "Price: " << path[i].price
                          << ", Latitude: " << path[i].latitude
-                         << ", Longitude: " << path[i].longitude;
+                         << ", Longitude: " << path[i].longitude<< ", City: " << path[i].cityName;
                if (i == path.size() - 1) {
                    std::cout << " (Final Node)";
                }
