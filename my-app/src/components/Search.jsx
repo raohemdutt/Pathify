@@ -194,7 +194,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
 
   const callLoadingScreen = () => {
     return <div class="fixed inset-0 flex items-center justify-center ">
-              <span className="w-[8vw] loading loading-spinner loading-lg"></span>
+              <span className="w-[8vw] loading loading-spinner loading-lg text-white"></span>
           </div>
   }
 
