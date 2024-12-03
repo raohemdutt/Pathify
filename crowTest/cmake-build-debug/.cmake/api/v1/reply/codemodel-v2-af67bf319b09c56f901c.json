@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/joshfix/CLionProjects/crow/cmake-build-debug",
-		"source" : "/Users/joshfix/CLionProjects/crow"
+		"build" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest/cmake-build-debug",
+		"source" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest"
 	},
 	"version" : 
 	{

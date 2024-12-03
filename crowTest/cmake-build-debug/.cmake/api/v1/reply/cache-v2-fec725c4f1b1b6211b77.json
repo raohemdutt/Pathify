@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/joshfix/CLionProjects/crow/cmake-build-debug"
+			"value" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -479,7 +479,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/joshfix/CLionProjects/crow/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/joshfix/CLionProjects/crow"
+			"value" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1099,10 +1099,10 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "No help, variable specified on the command line."
+					"value" : "The CMake toolchain file"
 				}
 			],
-			"type" : "UNINITIALIZED",
+			"type" : "FILEPATH",
 			"value" : "/Users/joshfix/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake"
 		},
 		{
@@ -1351,7 +1351,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/joshfix/CLionProjects/crow/cmake-build-debug"
+			"value" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest/cmake-build-debug"
 		},
 		{
 			"name" : "crow_IS_TOP_LEVEL",
@@ -1375,7 +1375,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/joshfix/CLionProjects/crow"
+			"value" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest"
 		}
 	],
 	"kind" : "cache",

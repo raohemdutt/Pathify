@@ -1249,8 +1249,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/Users/joshfix/Documents/GitHub/Pathify/ClionImplementation/cmake-build-debug",
-		"source" : "/Users/joshfix/Documents/GitHub/Pathify/ClionImplementation"
+		"build" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest/cmake-build-debug",
+		"source" : "/Users/joshfix/Documents/GitHub/Pathify/crowTest"
 	},
 	"version" : 
 	{

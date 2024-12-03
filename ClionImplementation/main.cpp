@@ -40,22 +40,28 @@ int main() {
     }
 
     //Start Crow Server:
-    crow::SimpleApp app;
+    crow::App<crow::CORSHandler> app;
+    auto& cors = app.get_middleware<crow::CORSHandler>();
+    cors.global().origin("*");
+
+
     //To access data from the query string (e.g., https://example.com/process?lat=20&lng=22&price=2000), use req.url_params:
     CROW_ROUTE(app, "/")([](){
             return "Hello world";
     });
 
 
-    //Example to call: http://0.0.0.0:8008/process?lat=20&lng=22&price=2000 use this to TEST!!!
+    //Example to call: http://0.0.0.0:8008/process?lat=20&lng=22&price=2000&type=a use this to TEST!!!
     CROW_ROUTE(app, "/process")([properties](const crow::request& req)->crow::response{
         crow::json::wvalue crowResponse;
         std::string lat = req.url_params.get("lat");
         std::string lng = req.url_params.get("lng");
         std::string price = req.url_params.get("price");
+        std::string type = req.url_params.get("type");
         double currentLatitude = strtod(lat.c_str(), nullptr);
         double currentLongitude = strtod(lng.c_str(), nullptr);
         double targetPrice = strtod(price.c_str(), nullptr);
+
         std::cout << "Running Processing with Lat: "<<currentLatitude<<" Lng: "<<currentLongitude<<" Price: "<<targetPrice<<std::endl;
         // Find the closest properties to the target price
         std::vector<Property>::const_iterator lowerBound = std::lower_bound(
@@ -91,11 +97,15 @@ int main() {
             return crow::response(400, error_response);
         }
 
+        auto dijkstraStart = std::chrono::high_resolution_clock::now();
         std::vector<Property> dijkstraPath = dijkstras(currentLatitude, currentLongitude, targetPrice, closestProperties);
+        auto dijkstraEnd = std::chrono::high_resolution_clock::now();
+        auto seconds = std::chrono::duration_cast<std::chrono::seconds>(dijkstraEnd - dijkstraStart);
         // Perform A* search using the updated algorithm
+        auto astarStart = std::chrono::high_resolution_clock::now();
         std::vector<Property> path = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
-
-
+        auto astarEnd = std::chrono::high_resolution_clock::now();
+        auto astarseconds = std::chrono::duration_cast<std::chrono::seconds>(astarEnd - astarStart);
 
         if (path.empty()) {
         std::cout << "No path found to the target property.\n";
@@ -122,24 +132,50 @@ int main() {
                std::cout << "\n";
            }
             //Create an array of objects with a price, longitude and latitude
-            crow::json::wvalue::list pathJson;
-            for (size_t i = 0; i < path.size(); ++i) {
-                crow::json::wvalue propertyJson;
-                propertyJson["price"] = path[i].price;
-                propertyJson["latitude"] = path[i].latitude;
-                propertyJson["longitude"] = path[i].longitude;
-
-                if (i == 0) {
-                    propertyJson["type"] = "start";
-                } else if (i == path.size() - 1) {
-                    propertyJson["type"] = "end";
-                } else {
-                    propertyJson["type"] = "intermediate";
+            if(type == "a") {
+                crow::json::wvalue::list pathJson;
+                for (size_t i = 0; i < path.size(); ++i) {
+                    crow::json::wvalue propertyJson;
+                    propertyJson["price"] = path[i].price;
+                    propertyJson["latitude"] = path[i].latitude;
+                    propertyJson["longitude"] = path[i].longitude;
+                    propertyJson["seconds"] = astarseconds.count();
+                    if (i == 0) {
+                        propertyJson["type"] = "start";
+                    } else if (i == path.size() - 1) {
+                        propertyJson["type"] = "end";
+                    } else {
+                        propertyJson["type"] = "intermediate";
+                    }
+                    pathJson.push_back(std::move(propertyJson));
                 }
-                pathJson.push_back(std::move(propertyJson));
+                crowResponse["path"] = std::move(pathJson);
             }
 
-            crowResponse["path"] = std::move(pathJson);
+            if(type == "d") {
+                //do dijkstras
+                crow::json::wvalue::list pathJson;
+                for (size_t i = 0; i < dijkstraPath.size(); ++i) {
+                    crow::json::wvalue propertyJson;
+                    propertyJson["price"] = dijkstraPath[i].price;
+                    propertyJson["latitude"] = dijkstraPath[i].latitude;
+                    propertyJson["longitude"] = dijkstraPath[i].longitude;
+                    propertyJson["seconds"] = seconds.count();
+                    if (i == 0) {
+                        propertyJson["type"] = "start";
+                    } else if (i == path.size() - 1) {
+                        propertyJson["type"] = "end";
+                    } else {
+                        propertyJson["type"] = "intermediate";
+                    }
+                    pathJson.push_back(std::move(propertyJson));
+                }
+                crowResponse["path"] = std::move(pathJson);
+            }
+
+
+
+
 
 
         }

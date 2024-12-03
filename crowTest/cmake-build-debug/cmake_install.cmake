@@ -1,4 +1,4 @@
-# Install script for directory: /Users/joshfix/CLionProjects/crow
+# Install script for directory: /Users/joshfix/Documents/GitHub/Pathify/crowTest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/joshfix/CLionProjects/crow/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/joshfix/Documents/GitHub/Pathify/crowTest/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
