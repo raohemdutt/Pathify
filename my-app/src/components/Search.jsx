@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function Search({setPathCurIdx, curLocation, setCurLocation, optPropData, setOptPropData}) {
-
+  const [isLoading, setLoading] = useState(false);
 
   // When submit button clicked setCurlocation Info
   function setLongLat() {
@@ -170,6 +170,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
   }
 
   const findPathButton = async () => {
+    setLoading(true);
     setPathCurIdx(0);
     // Should put laoding wheel here
     const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}`);
@@ -177,6 +178,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     const data = await response.json();
     console.log(data)
     console.log("Data on line 178 should be above this line");
+    setLoading(false)
     setOptPropData((prevState) => ({
       ...prevState,
       long: data.path[data.path.length-1].longitude,
@@ -190,11 +192,21 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     document.getElementById('pathModal').showModal()
   }
 
+  const callLoadingScreen = () => {
+    return <div class="fixed inset-0 flex items-center justify-center ">
+              <span className="w-[8vw] loading loading-spinner loading-lg"></span>
+          </div>
+  }
+
   console.log(curLocation);
 
   // For some reason removing labe causes err, may have to use desginated Daisy UI component
   return (
-    <div class="flex flex-col h-screen items-center">
+    <>
+      {isLoading ? 
+      callLoadingScreen()
+      : 
+      <div class="flex flex-col h-screen items-center">
       <section class="flex items-center justify-evenly rounded-md w-[85%] bg-[#f0ffffc9] mt-[25vh] h-[45vh]">
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
@@ -289,5 +301,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
         <button onClick={()=>findPathButton()} className="btn btn-primary text-white w-[25vw]">Find Your Path -{`>`}</button>
       </section>
     </div>
+    }
+    </>
   )
 }
