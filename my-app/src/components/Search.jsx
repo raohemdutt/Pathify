@@ -172,6 +172,13 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
   const findPathButton = async () => {
     setLoading(true);
     setPathCurIdx(0);
+    console.log("running fetch!")
+    /*
+    attempted to add client side but decided to just implement this in the server
+    if(curLocation.target.includes("$")){
+      console.log("erasing");
+      curLocation.target.replace("$","");
+    }*/
     // Should put laoding wheel here
     const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${curLocation.djk ? "d" : "a"}`);
     const data = await response.json();

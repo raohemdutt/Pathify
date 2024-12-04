@@ -55,21 +55,22 @@ int main() {
     //Example to call: http://0.0.0.0:8008/process?lat=20&lng=22&price=2000&type=a use this to TEST!!!
     CROW_ROUTE(app, "/process")([properties](const crow::request& req)->crow::response{
         crow::json::wvalue crowResponse;
+
         std::string lat = req.url_params.get("lat");
         std::string lng = req.url_params.get("lng");
         std::string price = req.url_params.get("price");
+        price.erase(std::remove(price.begin(), price.end(), '$'), price.end());
         std::string type = req.url_params.get("type");
         double currentLatitude = strtod(lat.c_str(), nullptr);
         double currentLongitude = strtod(lng.c_str(), nullptr);
         double targetPrice = strtod(price.c_str(), nullptr);
         std::string typeFull="";
-        if(type == "d") {
+        if(type == "true") {
             typeFull = "Dijkstras";
         }
-        else if(type == "a") {
+        else if(type == "false") {
             typeFull = "Astar";
         }
-
 
         std::cout << "Running "<<typeFull<<" with Lat: "<<currentLatitude<<" Lng: "<<currentLongitude<<" Price: "<<targetPrice<<std::endl;
         // Find the closest properties to the target price
@@ -108,7 +109,7 @@ int main() {
 
 
 
-        if(type == "a") {
+        if(type == "false") {
             // Perform A* search using the updated algorithm
             std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> result = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
             std::vector<Property> path = std::get<0>(result);
@@ -175,7 +176,7 @@ int main() {
 
 
 
-        if(type == "d") {
+        if(type == "true") {
             std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> dpath = dijkstraShortestPath(currentLatitude, currentLongitude, closestProperties);
             std::vector<Property> dijkstraPath = std::get<0>(dpath);
             TimingInfo dijkstraTiming = std::get<1>(dpath);
