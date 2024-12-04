@@ -1,5 +1,6 @@
 #include "AStar.h"
 #include "Haversine.h"
+#include "Utilities.h"
 #include <unordered_map>
 #include <set>
 #include <cmath>
@@ -9,37 +10,17 @@
 #include <iostream>
 #include <string>
 
+
 #include <map>
 
-
-
-std::map<std::string, std::vector<std::string>> cityMap;  // Map to store city names
-
-std::string getCityName(double latitude, double longitude) {
-    std::string command = "python3 reverse_geocode.py " +
-                          std::to_string(latitude) + " " +
-                          std::to_string(longitude);
-    char buffer[128];
-    std::string result;
-
-    FILE* pipe = popen(command.c_str(), "r");
-    if (!pipe) {
-        std::cerr << "Failed to run Python script.\n";
-        return "Unknown";
-    }
-    while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-        result += buffer;
-    }
-    pclose(pipe);
-
-    // Trim the output (if necessary)
-    result.erase(result.find_last_not_of(" \n\r\t") + 1);
-    return result;
-}
-
+//add memeory implmentation here 
 std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties) {
     
     auto startTime = std::chrono::high_resolution_clock::now();
+
+    size_t memoryOpenSet = 0;      // Memory used by the priority queue
+    size_t memoryAllNodes = 0;     // Memory used by all nodes map
+    size_t memoryClosedSet = 0;    // Memory used by the closed set
 
     // Priority queue to store nodes to explore
     std::priority_queue<Node, std::vector<Node>, std::greater<Node>> openSet;
@@ -75,6 +56,11 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
     openSet.push(startNode);
     allNodes[closestNodeIndex] = startNode;
 
+
+    memoryOpenSet = sizeof(Node) * openSet.size(); // Memory for the priority queue
+    memoryAllNodes = sizeof(Node) * allNodes.size(); // Memory for the nodes map
+
+
     Node bestGoalNode;
     bool goalFound = false;
 
@@ -86,6 +72,7 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
     while (!openSet.empty()) {
         Node current = openSet.top();
         openSet.pop();
+        memoryOpenSet = sizeof(Node) * openSet.size();  // Update memory usage for openSet
 
         // Update best goal node
         if (!goalFound || std::abs(current.property.price - targetPrice) < std::abs(bestGoalNode.property.price - targetPrice)) {
@@ -93,6 +80,7 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
             goalFound = true;
         }
         closedSet.insert(current.id);
+        memoryClosedSet = sizeof(int) * closedSet.size();  // Update memory usage for closedSet
 
         // Expand neighbors
         // for (size_t i = 0; i < properties.size(); ++i) {
@@ -112,6 +100,10 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
             if (!allNodes.count(i) || tentativeGCost < allNodes[i].gCost) {
                 openSet.push(neighbor);
                 allNodes[i] = neighbor;
+                
+                memoryOpenSet = sizeof(Node) * openSet.size();  // Update memory for openSet
+                memoryAllNodes = sizeof(Node) * allNodes.size();  // Update memory for allNodes
+
             } 
         }
     }
@@ -138,7 +130,6 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
     auto step4End = std::chrono::high_resolution_clock::now();
 
     auto endTime = std::chrono::high_resolution_clock::now();
-
     // Print time breakdown
     TimingInfo timings;
     timings.step1Time = std::chrono::duration_cast<std::chrono::microseconds>(step1End - step1Start).count();
@@ -147,7 +138,7 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
     timings.step4Time = std::chrono::duration_cast<std::chrono::microseconds>(step4End - step4Start).count();
     timings.totalTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
 
-
+    // Print time breakdown
     std::cout << "Time Breakdown (in microseconds):\n";
     std::cout << "Step 1 (Find Closest Node): " 
               << std::chrono::duration_cast<std::chrono::microseconds>(step1End - step1Start).count() << "µs\n";
@@ -160,13 +151,21 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
     std::cout << "Total Time: " 
               << std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count() << "µs\n";
 
+    // Print memory breakdown
+    std::cout << "\nMemory Breakdown (in bytes):\n";
+    std::cout << "Priority Queue (Open Set): " << memoryOpenSet << " bytes\n";
+    std::cout << "All Nodes Map: " << memoryAllNodes << " bytes\n";
+    std::cout << "Closed Set: " << memoryClosedSet << " bytes\n";
+    std::cout << "Total Memory Usage: "
+              << memoryOpenSet + memoryAllNodes + memoryClosedSet << " bytes\n";
+
     // Clear previous data in the cityMap
     cityMap.clear();
 
            std::cout << "\n A* Path :\n";
     for (size_t i = 0; i < path.size(); ++i) {
          std::string cityName = getCityName(path[i].latitude, path[i].longitude);
-            path[i].cityName = cityName;  // Add city name to the property
+        path[i].cityName = cityName;  // Add city name to the property
 
         // Add city to the map
         if (i == 0) {

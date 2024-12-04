@@ -5,10 +5,11 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/include)
 add_executable(untitled2
         main.cpp
-        Node.h
         ReadCSV.cpp
         Haversine.cpp
         AStar.cpp
-        Dijkstras.h)
+        Dijkstras.cpp
+        Utilities.cpp
+)
 find_package(asio CONFIG REQUIRED)
 target_link_libraries(untitled2 PRIVATE asio::asio)

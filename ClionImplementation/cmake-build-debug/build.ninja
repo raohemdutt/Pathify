@@ -77,6 +77,20 @@ build CMakeFiles/untitled2.dir/AStar.cpp.o: CXX_COMPILER__untitled2_unscanned_De
   OBJECT_DIR = CMakeFiles/untitled2.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled2.dir
 
+build CMakeFiles/untitled2.dir/Dijkstras.cpp.o: CXX_COMPILER__untitled2_unscanned_Debug /Users/joshfix/Documents/GitHub/Pathify/ClionImplementation/Dijkstras.cpp || cmake_object_order_depends_target_untitled2
+  DEP_FILE = CMakeFiles/untitled2.dir/Dijkstras.cpp.o.d
+  FLAGS = -g -std=gnu++11 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.2 -fcolor-diagnostics
+  INCLUDES = -isystem /Users/joshfix/Documents/GitHub/Pathify/ClionImplementation/include -isystem /Users/joshfix/.vcpkg-clion/vcpkg/installed/arm64-osx/include
+  OBJECT_DIR = CMakeFiles/untitled2.dir
+  OBJECT_FILE_DIR = CMakeFiles/untitled2.dir
+
+build CMakeFiles/untitled2.dir/Utilities.cpp.o: CXX_COMPILER__untitled2_unscanned_Debug /Users/joshfix/Documents/GitHub/Pathify/ClionImplementation/Utilities.cpp || cmake_object_order_depends_target_untitled2
+  DEP_FILE = CMakeFiles/untitled2.dir/Utilities.cpp.o.d
+  FLAGS = -g -std=gnu++11 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.2 -fcolor-diagnostics
+  INCLUDES = -isystem /Users/joshfix/Documents/GitHub/Pathify/ClionImplementation/include -isystem /Users/joshfix/.vcpkg-clion/vcpkg/installed/arm64-osx/include
+  OBJECT_DIR = CMakeFiles/untitled2.dir
+  OBJECT_FILE_DIR = CMakeFiles/untitled2.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target untitled2
@@ -85,7 +99,7 @@ build CMakeFiles/untitled2.dir/AStar.cpp.o: CXX_COMPILER__untitled2_unscanned_De
 #############################################
 # Link the executable untitled2
 
-build untitled2: CXX_EXECUTABLE_LINKER__untitled2_Debug CMakeFiles/untitled2.dir/main.cpp.o CMakeFiles/untitled2.dir/ReadCSV.cpp.o CMakeFiles/untitled2.dir/Haversine.cpp.o CMakeFiles/untitled2.dir/AStar.cpp.o
+build untitled2: CXX_EXECUTABLE_LINKER__untitled2_Debug CMakeFiles/untitled2.dir/main.cpp.o CMakeFiles/untitled2.dir/ReadCSV.cpp.o CMakeFiles/untitled2.dir/Haversine.cpp.o CMakeFiles/untitled2.dir/AStar.cpp.o CMakeFiles/untitled2.dir/Dijkstras.cpp.o CMakeFiles/untitled2.dir/Utilities.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.2
   OBJECT_DIR = CMakeFiles/untitled2.dir
   POST_BUILD = :

@@ -7,8 +7,9 @@
 #include "ReadCSV.h"
 #include "AStar.h"
 #include "Haversine.h"
-#include "Dijkstras.cpp"
+
 #include "crow_all.h"
+#include "Dijkstras.h"
 
 // Comparator function for lower_bound to find closest price
 bool comparePropertyPrice(const Property &prop, double price) {
@@ -97,10 +98,9 @@ int main() {
             return crow::response(400, error_response);
         }
 
-        auto dijkstraStart = std::chrono::high_resolution_clock::now();
-        //std::vector<Property> dijkstraPath = dijkstras(currentLatitude, currentLongitude, targetPrice, closestProperties);
-        auto dijkstraEnd = std::chrono::high_resolution_clock::now();
-        auto dseconds = std::chrono::duration_cast<std::chrono::milliseconds>(dijkstraEnd - dijkstraStart);
+        std::tuple<std::vector<Property>, TimingInfo> dpath = dijkstraShortestPath(currentLatitude, currentLongitude, closestProperties);
+        std::vector<Property> dijkstraPath = std::get<0>(dpath);
+        TimingInfo dijkstraTiming = std::get<1>(dpath);
         // Perform A* search using the updated algorithm
         std::tuple<std::vector<Property>, TimingInfo> result = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
         std::vector<Property> path = std::get<0>(result);
@@ -139,6 +139,34 @@ int main() {
                     propertyJson["price"] = path[i].price;
                     propertyJson["latitude"] = path[i].latitude;
                     propertyJson["longitude"] = path[i].longitude;
+                    propertyJson["city"] = path[i].cityName;
+                    propertyJson["step1micros"] = dijkstraTiming.step1Time;
+                    propertyJson["step2micros"] = dijkstraTiming.step2Time;
+                    propertyJson["step3micros"] = dijkstraTiming.step3Time;
+                    propertyJson["step4micros"] = dijkstraTiming.step4Time;
+                    propertyJson["totalmicros"] = dijkstraTiming.totalTime;
+                    if (i == 0) {
+                        propertyJson["type"] = "start";
+                    } else if (i == path.size() - 1) {
+                        propertyJson["type"] = "end";
+                    } else {
+                        propertyJson["type"] = "intermediate";
+                    }
+                    pathJson.push_back(std::move(propertyJson));
+                }
+                crowResponse["path"] = std::move(pathJson);
+            }
+
+            if(type == "d") {
+                //do dijkstras
+                std::cout<<"Dijkstras Algo Running"<<std::endl;
+                crow::json::wvalue::list pathJson;
+                for (size_t i = 0; i < dijkstraPath.size(); ++i) {
+                    crow::json::wvalue propertyJson;
+                    propertyJson["price"] = dijkstraPath[i].price;
+                    propertyJson["latitude"] = dijkstraPath[i].latitude;
+                    propertyJson["longitude"] = dijkstraPath[i].longitude;
+                    propertyJson["city"] = dijkstraPath[i].cityName;
                     propertyJson["step1micros"] = timings.step1Time;
                     propertyJson["step2micros"] = timings.step2Time;
                     propertyJson["step3micros"] = timings.step3Time;
@@ -155,30 +183,7 @@ int main() {
                 }
                 crowResponse["path"] = std::move(pathJson);
             }
-/*
- *To Fix
-            if(type == "d") {
-                //do dijkstras
-                crow::json::wvalue::list pathJson;
-                for (size_t i = 0; i < dijkstraPath.size(); ++i) {
-                    crow::json::wvalue propertyJson;
-                    propertyJson["price"] = dijkstraPath[i].price;
-                    propertyJson["latitude"] = dijkstraPath[i].latitude;
-                    propertyJson["longitude"] = dijkstraPath[i].longitude;
-                    propertyJson["seconds"] = dseconds.count();
-                    if (i == 0) {
-                        propertyJson["type"] = "start";
-                    } else if (i == path.size() - 1) {
-                        propertyJson["type"] = "end";
-                    } else {
-                        propertyJson["type"] = "intermediate";
-                    }
-                    pathJson.push_back(std::move(propertyJson));
-                }
-                crowResponse["path"] = std::move(pathJson);
-            }
 
-*/
 
 
 
