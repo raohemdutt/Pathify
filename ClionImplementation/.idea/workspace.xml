@@ -24,22 +24,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09d36487-2782-4494-890b-1a79588ddd29" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Utilities.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utilities.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AStar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AStar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dijkstras.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Dijkstras.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dijkstras.h" beforeDir="false" afterPath="$PROJECT_DIR$/Dijkstras.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-2d0bea7e366589c9ca88.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2024-12-02T23-32-45-0713.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-untitled2-Debug-c19cb61fa7047321a34f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -350,7 +335,7 @@
       <workItem from="1732654577196" duration="31176000" />
       <workItem from="1733077449599" duration="53000" />
       <workItem from="1733077565731" duration="20114000" />
-      <workItem from="1733261702597" duration="8893000" />
+      <workItem from="1733261702597" duration="9708000" />
     </task>
     <servers />
   </component>
