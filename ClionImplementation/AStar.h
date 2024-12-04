@@ -24,5 +24,13 @@ struct TimingInfo {
 };
 
 
+struct MemoryInfo {
+    long long memoryOpenSet;
+    long long memoryAllNodes;
+    long long memoryClosedSet;
+    long long memoryTotal;
+};
+
+
 // Function to perform A* search and return the shortest path
-std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties);
+std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties);

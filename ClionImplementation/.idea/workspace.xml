@@ -25,6 +25,15 @@
   <component name="ChangeListManager">
     <list default="true" id="09d36487-2782-4494-890b-1a79588ddd29" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AStar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AStar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AStar.h" beforeDir="false" afterPath="$PROJECT_DIR$/AStar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dijkstras.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Dijkstras.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dijkstras.h" beforeDir="false" afterPath="$PROJECT_DIR$/Dijkstras.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -335,7 +344,7 @@
       <workItem from="1732654577196" duration="31176000" />
       <workItem from="1733077449599" duration="53000" />
       <workItem from="1733077565731" duration="20114000" />
-      <workItem from="1733261702597" duration="9708000" />
+      <workItem from="1733261702597" duration="12137000" />
     </task>
     <servers />
   </component>
@@ -356,13 +365,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>134</line>
+          <line>136</line>
           <option name="timeStamp" value="40" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>181</line>
-          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

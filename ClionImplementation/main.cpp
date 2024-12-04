@@ -98,13 +98,15 @@ int main() {
             return crow::response(400, error_response);
         }
 
-        std::tuple<std::vector<Property>, TimingInfo> dpath = dijkstraShortestPath(currentLatitude, currentLongitude, closestProperties);
+        std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> dpath = dijkstraShortestPath(currentLatitude, currentLongitude, closestProperties);
         std::vector<Property> dijkstraPath = std::get<0>(dpath);
         TimingInfo dijkstraTiming = std::get<1>(dpath);
+        MemoryInfo dijkstraMemory = std::get<2>(dpath);
         // Perform A* search using the updated algorithm
-        std::tuple<std::vector<Property>, TimingInfo> result = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
+        std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> result = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
         std::vector<Property> path = std::get<0>(result);
         TimingInfo timings = std::get<1>(result);
+        MemoryInfo aStarMemory = std::get<2>(result);
 
 
         if (path.empty()) {
@@ -140,11 +142,15 @@ int main() {
                     propertyJson["latitude"] = path[i].latitude;
                     propertyJson["longitude"] = path[i].longitude;
                     propertyJson["city"] = path[i].cityName;
-                    propertyJson["step1micros"] = dijkstraTiming.step1Time;
-                    propertyJson["step2micros"] = dijkstraTiming.step2Time;
-                    propertyJson["step3micros"] = dijkstraTiming.step3Time;
-                    propertyJson["step4micros"] = dijkstraTiming.step4Time;
-                    propertyJson["totalmicros"] = dijkstraTiming.totalTime;
+                    propertyJson["step1micros"] = timings.step1Time;
+                    propertyJson["step2micros"] = timings.step2Time;
+                    propertyJson["step3micros"] = timings.step3Time;
+                    propertyJson["step4micros"] = timings.step4Time;
+                    propertyJson["totalmicros"] = timings.totalTime;
+                    propertyJson["memoryOpenSet"] = aStarMemory.memoryOpenSet;
+                    propertyJson["memoryAllNodes"] = aStarMemory.memoryAllNodes;
+                    propertyJson["memoryClosedSet"] = aStarMemory.memoryClosedSet;
+                    propertyJson["memoryTotal"] = aStarMemory.memoryTotal;
                     if (i == 0) {
                         propertyJson["type"] = "start";
                     } else if (i == path.size() - 1) {
@@ -167,11 +173,15 @@ int main() {
                     propertyJson["latitude"] = dijkstraPath[i].latitude;
                     propertyJson["longitude"] = dijkstraPath[i].longitude;
                     propertyJson["city"] = dijkstraPath[i].cityName;
-                    propertyJson["step1micros"] = timings.step1Time;
-                    propertyJson["step2micros"] = timings.step2Time;
-                    propertyJson["step3micros"] = timings.step3Time;
-                    propertyJson["step4micros"] = timings.step4Time;
-                    propertyJson["totalmicros"] = timings.totalTime;
+                    propertyJson["step1micros"] = dijkstraTiming.step1Time;
+                    propertyJson["step2micros"] = dijkstraTiming.step2Time;
+                    propertyJson["step3micros"] = dijkstraTiming.step3Time;
+                    propertyJson["step4micros"] = dijkstraTiming.step4Time;
+                    propertyJson["totalmicros"] = dijkstraTiming.totalTime;
+                    propertyJson["memoryOpenSet"] = dijkstraMemory.memoryOpenSet;
+                    propertyJson["memoryAllNodes"] = dijkstraMemory.memoryAllNodes;
+                    propertyJson["memoryClosedSet"] = dijkstraMemory.memoryClosedSet;
+                    propertyJson["memoryTotal"] = dijkstraMemory.memoryTotal;
                     if (i == 0) {
                         propertyJson["type"] = "start";
                     } else if (i == path.size() - 1) {
@@ -183,11 +193,6 @@ int main() {
                 }
                 crowResponse["path"] = std::move(pathJson);
             }
-
-
-
-
-
         }
         // Save selected properties to a CSV file
         writeToCSV("Filtered_Properties.csv", closestProperties);

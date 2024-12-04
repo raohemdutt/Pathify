@@ -41,4 +41,4 @@ struct DijkstraNode {
 };
 
 // Function declaration for Dijkstra's algorithm
-std::tuple<std::vector<Property>, TimingInfo> dijkstraShortestPath(double startLat, double startLon, const std::vector<Property>& properties);
+std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> dijkstraShortestPath(double startLat, double startLon, const std::vector<Property>& properties);

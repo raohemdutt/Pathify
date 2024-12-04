@@ -14,7 +14,7 @@
 #include <map>
 
 //add memeory implmentation here 
-std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties) {
+std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> aStarSearch(double startLat, double startLon, double targetPrice, const std::vector<Property>& properties) {
     
     auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -159,6 +159,12 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
     std::cout << "Total Memory Usage: "
               << memoryOpenSet + memoryAllNodes + memoryClosedSet << " bytes\n";
 
+    MemoryInfo memoryInfo;
+    memoryInfo.memoryOpenSet = memoryOpenSet;
+    memoryInfo.memoryAllNodes = memoryAllNodes;
+    memoryInfo.memoryClosedSet = memoryClosedSet;
+    memoryInfo.memoryTotal = memoryOpenSet + memoryAllNodes + memoryClosedSet;
+
     // Clear previous data in the cityMap
     cityMap.clear();
 
@@ -184,5 +190,5 @@ std::tuple<std::vector<Property>, TimingInfo> aStarSearch(double startLat, doubl
 // for (const auto& city : cityMap["intermediary"]) {
 //     std::cout << "Intermediary City: " << city << "\n";
 // }
-    return {path, timings};
+    return {path, timings, memoryInfo};
 }

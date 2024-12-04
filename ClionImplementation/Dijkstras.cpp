@@ -9,7 +9,7 @@
 #include <chrono>
 #include <iostream>
 
-std::tuple<std::vector<Property>, TimingInfo> dijkstraShortestPath(double startLat, double startLon, const std::vector<Property>& properties) {
+std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> dijkstraShortestPath(double startLat, double startLon, const std::vector<Property>& properties) {
     auto startTime = std::chrono::high_resolution_clock::now();
 
     // Priority queue to store nodes to explore
@@ -152,6 +152,11 @@ std::tuple<std::vector<Property>, TimingInfo> dijkstraShortestPath(double startL
     std::cout << "Total Time: "
               << std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count() << "µs\n";
 
+    MemoryInfo memoryInfo;
+    memoryInfo.memoryOpenSet = memoryOpenSet;
+    memoryInfo.memoryAllNodes = memoryAllNodes;
+    memoryInfo.memoryClosedSet = memoryClosedSet;
+    memoryInfo.memoryTotal = memoryOpenSet + memoryAllNodes + memoryClosedSet;
     std::cout << "\nMemory Breakdown (in bytes):\n";
     std::cout << "Priority Queue (Open Set): " << memoryOpenSet << " bytes\n";
     std::cout << "All Nodes Map: " << memoryAllNodes << " bytes\n";
@@ -168,5 +173,5 @@ std::tuple<std::vector<Property>, TimingInfo> dijkstraShortestPath(double startL
                   << ", Longitude: " << prop.longitude << "\n";
     }
 
-    return {path, timings};
+    return {path, timings, memoryInfo};
 }
