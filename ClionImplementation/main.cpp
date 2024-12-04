@@ -62,8 +62,16 @@ int main() {
         double currentLatitude = strtod(lat.c_str(), nullptr);
         double currentLongitude = strtod(lng.c_str(), nullptr);
         double targetPrice = strtod(price.c_str(), nullptr);
+        std::string typeFull="";
+        if(type == "d") {
+            typeFull = "Dijkstras";
+        }
+        else if(type == "a") {
+            typeFull = "Astar";
+        }
 
-        std::cout << "Running Processing with Lat: "<<currentLatitude<<" Lng: "<<currentLongitude<<" Price: "<<targetPrice<<std::endl;
+
+        std::cout << "Running "<<typeFull<<" with Lat: "<<currentLatitude<<" Lng: "<<currentLongitude<<" Price: "<<targetPrice<<std::endl;
         // Find the closest properties to the target price
         std::vector<Property>::const_iterator lowerBound = std::lower_bound(
         properties.begin(), properties.end(), targetPrice, comparePropertyPrice);
@@ -98,102 +106,117 @@ int main() {
             return crow::response(400, error_response);
         }
 
-        std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> dpath = dijkstraShortestPath(currentLatitude, currentLongitude, closestProperties);
-        std::vector<Property> dijkstraPath = std::get<0>(dpath);
-        TimingInfo dijkstraTiming = std::get<1>(dpath);
-        MemoryInfo dijkstraMemory = std::get<2>(dpath);
-        // Perform A* search using the updated algorithm
-        std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> result = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
-        std::vector<Property> path = std::get<0>(result);
-        TimingInfo timings = std::get<1>(result);
-        MemoryInfo aStarMemory = std::get<2>(result);
 
 
-        if (path.empty()) {
-        std::cout << "No path found to the target property.\n";
-        }
-        else {
-            std::cout << "A* Path found to target property:\n";
-            const Property& startNode = path.front();
-            std::cout << "User's Position:\n";
-            std::cout << "Price: " << startNode.price << ", Latitude: " << startNode.latitude << ", Longitude: " << startNode.longitude << "\n\n";
-            // Print final destination
-           const Property& finalNode = path.back();
-           std::cout << "Final Destination Found A* by:\n";
-           std::cout << "Price: " << finalNode.price << ", Latitude: " << finalNode.latitude << ", Longitude: " << finalNode.longitude << "\n\n";
+        if(type == "a") {
+            // Perform A* search using the updated algorithm
+            std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> result = aStarSearch(currentLatitude, currentLongitude, targetPrice, closestProperties);
+            std::vector<Property> path = std::get<0>(result);
+            TimingInfo timings = std::get<1>(result);
+            MemoryInfo aStarMemory = std::get<2>(result);
 
-           // Print the entire path
-           std::cout << "A* Path Begin:\n";
-           for (size_t i = 0; i < path.size(); ++i) {
-               std::cout << "Price: " << path[i].price
-                         << ", Latitude: " << path[i].latitude
-                         << ", Longitude: " << path[i].longitude<< ", City: " << path[i].cityName;
-               if (i == path.size() - 1) {
-                   std::cout << " (Final Node)";
-               }
-               std::cout << "\n";
-           }
-            //Create an array of objects with a price, longitude and latitude
-            if(type == "a") {
-                crow::json::wvalue::list pathJson;
-                for (size_t i = 0; i < path.size(); ++i) {
-                    crow::json::wvalue propertyJson;
-                    propertyJson["price"] = path[i].price;
-                    propertyJson["latitude"] = path[i].latitude;
-                    propertyJson["longitude"] = path[i].longitude;
-                    propertyJson["city"] = path[i].cityName;
-                    propertyJson["step1micros"] = timings.step1Time;
-                    propertyJson["step2micros"] = timings.step2Time;
-                    propertyJson["step3micros"] = timings.step3Time;
-                    propertyJson["step4micros"] = timings.step4Time;
-                    propertyJson["totalmicros"] = timings.totalTime;
-                    propertyJson["memoryOpenSet"] = aStarMemory.memoryOpenSet;
-                    propertyJson["memoryAllNodes"] = aStarMemory.memoryAllNodes;
-                    propertyJson["memoryClosedSet"] = aStarMemory.memoryClosedSet;
-                    propertyJson["memoryTotal"] = aStarMemory.memoryTotal;
-                    if (i == 0) {
-                        propertyJson["type"] = "start";
-                    } else if (i == path.size() - 1) {
-                        propertyJson["type"] = "end";
-                    } else {
-                        propertyJson["type"] = "intermediate";
+
+            if (path.empty()) {
+                    std::cout << "No path found to the target property.\n";
                     }
-                    pathJson.push_back(std::move(propertyJson));
-                }
-                crowResponse["path"] = std::move(pathJson);
-            }
+                    else {
+                        std::cout << "A* Path found to target property:\n";
+                        const Property& startNode = path.front();
+                        std::cout << "User's Position:\n";
+                        std::cout << "Price: " << startNode.price << ", Latitude: " << startNode.latitude << ", Longitude: " << startNode.longitude << "\n\n";
+                        // Print final destination
+                       const Property& finalNode = path.back();
+                       std::cout << "Final Destination Found A* by:\n";
+                       std::cout << "Price: " << finalNode.price << ", Latitude: " << finalNode.latitude << ", Longitude: " << finalNode.longitude << "\n\n";
 
-            if(type == "d") {
-                //do dijkstras
-                std::cout<<"Dijkstras Algo Running"<<std::endl;
-                crow::json::wvalue::list pathJson;
-                for (size_t i = 0; i < dijkstraPath.size(); ++i) {
-                    crow::json::wvalue propertyJson;
-                    propertyJson["price"] = dijkstraPath[i].price;
-                    propertyJson["latitude"] = dijkstraPath[i].latitude;
-                    propertyJson["longitude"] = dijkstraPath[i].longitude;
-                    propertyJson["city"] = dijkstraPath[i].cityName;
-                    propertyJson["step1micros"] = dijkstraTiming.step1Time;
-                    propertyJson["step2micros"] = dijkstraTiming.step2Time;
-                    propertyJson["step3micros"] = dijkstraTiming.step3Time;
-                    propertyJson["step4micros"] = dijkstraTiming.step4Time;
-                    propertyJson["totalmicros"] = dijkstraTiming.totalTime;
-                    propertyJson["memoryOpenSet"] = dijkstraMemory.memoryOpenSet;
-                    propertyJson["memoryAllNodes"] = dijkstraMemory.memoryAllNodes;
-                    propertyJson["memoryClosedSet"] = dijkstraMemory.memoryClosedSet;
-                    propertyJson["memoryTotal"] = dijkstraMemory.memoryTotal;
-                    if (i == 0) {
-                        propertyJson["type"] = "start";
-                    } else if (i == path.size() - 1) {
-                        propertyJson["type"] = "end";
-                    } else {
-                        propertyJson["type"] = "intermediate";
+                       // Print the entire path
+                       std::cout << "A* Path Begin:\n";
+                       for (size_t i = 0; i < path.size(); ++i) {
+                           std::cout << "Price: " << path[i].price
+                                     << ", Latitude: " << path[i].latitude
+                                     << ", Longitude: " << path[i].longitude<< ", City: " << path[i].cityName;
+                           if (i == path.size() - 1) {
+                               std::cout << " (Final Node)";
+                           }
+                           std::cout << "\n";
+                       }
+                        //Create an array of objects with a price, longitude and latitude
                     }
-                    pathJson.push_back(std::move(propertyJson));
+
+
+            crow::json::wvalue::list pathJson;
+            for (size_t i = 0; i < path.size(); ++i) {
+                crow::json::wvalue propertyJson;
+                propertyJson["price"] = path[i].price;
+                propertyJson["latitude"] = path[i].latitude;
+                propertyJson["longitude"] = path[i].longitude;
+                propertyJson["city"] = path[i].cityName;
+                propertyJson["step1micros"] = timings.step1Time;
+                propertyJson["step2micros"] = timings.step2Time;
+                propertyJson["step3micros"] = timings.step3Time;
+                propertyJson["step4micros"] = timings.step4Time;
+                propertyJson["totalmicros"] = timings.totalTime;
+                propertyJson["memoryOpenSet"] = aStarMemory.memoryOpenSet;
+                propertyJson["memoryAllNodes"] = aStarMemory.memoryAllNodes;
+                propertyJson["memoryClosedSet"] = aStarMemory.memoryClosedSet;
+                propertyJson["memoryTotal"] = aStarMemory.memoryTotal;
+                if (i == 0) {
+                    propertyJson["type"] = "start";
+                } else if (i == path.size() - 1) {
+                    propertyJson["type"] = "end";
+                } else {
+                    propertyJson["type"] = "intermediate";
                 }
-                crowResponse["path"] = std::move(pathJson);
+                pathJson.push_back(std::move(propertyJson));
             }
+            crowResponse["path"] = std::move(pathJson);
         }
+
+
+
+
+        if(type == "d") {
+            std::tuple<std::vector<Property>, TimingInfo, MemoryInfo> dpath = dijkstraShortestPath(currentLatitude, currentLongitude, closestProperties);
+            std::vector<Property> dijkstraPath = std::get<0>(dpath);
+            TimingInfo dijkstraTiming = std::get<1>(dpath);
+            MemoryInfo dijkstraMemory = std::get<2>(dpath);
+            //do dijkstras
+            std::cout<<"Dijkstras Algo Running"<<std::endl;
+            crow::json::wvalue::list pathJson;
+            for (size_t i = 0; i < dijkstraPath.size(); ++i) {
+                crow::json::wvalue propertyJson;
+                propertyJson["price"] = dijkstraPath[i].price;
+                propertyJson["latitude"] = dijkstraPath[i].latitude;
+                propertyJson["longitude"] = dijkstraPath[i].longitude;
+                propertyJson["city"] = dijkstraPath[i].cityName;
+                propertyJson["step1micros"] = dijkstraTiming.step1Time;
+                propertyJson["step2micros"] = dijkstraTiming.step2Time;
+                propertyJson["step3micros"] = dijkstraTiming.step3Time;
+                propertyJson["step4micros"] = dijkstraTiming.step4Time;
+                propertyJson["totalmicros"] = dijkstraTiming.totalTime;
+                propertyJson["memoryOpenSet"] = dijkstraMemory.memoryOpenSet;
+                propertyJson["memoryAllNodes"] = dijkstraMemory.memoryAllNodes;
+                propertyJson["memoryClosedSet"] = dijkstraMemory.memoryClosedSet;
+                propertyJson["memoryTotal"] = dijkstraMemory.memoryTotal;
+                if (i == 0) {
+                    propertyJson["type"] = "start";
+                } else if (i == dijkstraPath.size() - 1) {
+                    propertyJson["type"] = "end";
+                } else {
+                    propertyJson["type"] = "intermediate";
+                }
+                pathJson.push_back(std::move(propertyJson));
+            }
+            crowResponse["path"] = std::move(pathJson);
+        }
+
+
+
+
+
+
+
+
         // Save selected properties to a CSV file
         writeToCSV("Filtered_Properties.csv", closestProperties);
         std::cout << "Filtered properties saved to 'Filtered_Properties.csv'." << std::endl;
