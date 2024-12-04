@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import MapWithRoute from "./Map.jsx"
 
-export default function PathPage({curIdx, setCurIdx, curLocation}) {
-
-  const [optPropData, setOptPropData] = useState({
-    long: 0,
-    lat: 0,
-    name: 0,
-    djkTime: 0,
-    AStrTime: 0,
-    PrevNodes: [[24.5, 34.5],[23.4,34.5],[24.6, 56.4],[34.2,53.6],[35.4, 64.3]]
-  });  
-
+export default function PathPage({curIdx, setCurIdx, curLocation, optPropData, setOptPropData}) {
   
-
+    console.log("PATH PAGHE RENDERED")
   // Manage interval for updating curIdx
+  const [hasMounted, setHasMounted] = useState(false);
   useEffect(() => {
+    if (!hasMounted) {
+        setHasMounted(true); // Mark the component as "mounted"
+        return; // Skip the effect on initial load
+    }
     console.log("Currect idx is: " + curIdx);
+    console.log("Lenght is: " + optPropData.PrevNodes.length);
     
     if (curIdx >= optPropData.PrevNodes.length) return; // Stop interval if all nodes are processed
 
     const intervalId = setTimeout(() => {
+    
       setCurIdx((prevIdx) => {
-        if (prevIdx < optPropData.PrevNodes.length - 1) {
+        if (prevIdx < optPropData.PrevNodes.length) {
           return prevIdx + 1;
         } else {
           clearInterval(intervalId); // Clear the interval when reaching the end
@@ -32,7 +29,7 @@ export default function PathPage({curIdx, setCurIdx, curLocation}) {
     }, 3000);
 
     return () => clearInterval(intervalId); // Cleanup on component unmount
-  }, [curIdx, optPropData.PrevNodes.length]);
+  }, [curIdx, optPropData]);
 
   return (
     <>
@@ -48,16 +45,16 @@ export default function PathPage({curIdx, setCurIdx, curLocation}) {
                             </div>
                         </div>
                         {/* Render MapWithRoute for the current node */}
-                        {curIdx < optPropData.PrevNodes.length-1 && (
+                        {curIdx < optPropData.PrevNodes.length && (
                         <MapWithRoute
-                            latStart={optPropData.PrevNodes[curIdx][0]}
-                            longStart={optPropData.PrevNodes[curIdx][1]}
-                            latEnd={optPropData.lat}
-                            longEnd={optPropData.long}
+                            latStart={curLocation.lat}
+                            longStart={curLocation.long}
+                            latEnd={optPropData.PrevNodes[curIdx][0]}
+                            longEnd={optPropData.PrevNodes[curIdx][1]}
                         />
                         )}
                         {/* Render final location map once the interval finishes */}
-                        {curIdx === optPropData.PrevNodes.length-1 && (
+                        {curIdx === optPropData.PrevNodes.length && (
                         <MapWithRoute
                             latStart={curLocation.lat}
                             longStart={curLocation.long}
