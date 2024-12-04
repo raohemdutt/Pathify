@@ -45,21 +45,21 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     return curLocation.priceBased ? setPrice() : setArea();
   }
 
-  const handlePriceAreaChange = (event) => {
-    const value = event.target.value;
-    if(value === "Price") {
-      setCurLocation((prevState) => ({
-        ...prevState,
-        priceBased: true
-      }));
-    }
-    else {
-      setCurLocation((prevState) => ({
-        ...prevState,
-        priceBased: false
-      }));
-    }
-  }
+  // const handlePriceAreaChange = (event) => {
+  //   const value = event.target.value;
+  //   if(value === "Price") {
+  //     setCurLocation((prevState) => ({
+  //       ...prevState,
+  //       priceBased: true
+  //     }));
+  //   }
+  //   else {
+  //     setCurLocation((prevState) => ({
+  //       ...prevState,
+  //       priceBased: false
+  //     }));
+  //   }
+  // }
 
   const handleLatChange = (event) => {
     const value = event.target.value;
@@ -87,7 +87,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
 
   const handleAlgoChange = (event) => {
     const value = event.target.value;
-    if(value == "Djk") {
+    if(value === "Djk") {
       setCurLocation((prevState) => ({
         ...prevState,
         djk: true
@@ -173,22 +173,39 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     setLoading(true);
     setPathCurIdx(0);
     // Should put laoding wheel here
-    const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}`);
-    // A star gives three nodes with end being target
+    const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${curLocation.djk ? "d" : "a"}`);
     const data = await response.json();
+    let otherRes = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${!curLocation.djk ? "d" : "a"}`);
+    const otherData = await otherRes.json();
+    // A star gives three nodes with end being target
+    console.log("Target Data:")
     console.log(data)
+    console.log("Other Data:")
+    console.log(otherData)
     console.log("Data on line 178 should be above this line");
     setLoading(false)
+    let totalMicros = data.path[data.path.length-1].totalmicros/1000000;
+    totalMicros = Math.round(totalMicros * 100) / 100;
     setOptPropData((prevState) => ({
       ...prevState,
       long: data.path[data.path.length-1].longitude,
       lat: data.path[data.path.length-1].latitude,
-      djkTime: 0, // Waiting from Josh JSON
-      AstrTime: 0, // Waiting from Josh JSON
-      target: 10.00, // Waiting from Josh JSON
+      djkTime: totalMicros,
+      target: 10.00,
       PrevNodes: [[data.path[0].latitude, data.path[0].longitude],[data.path[1].latitude, data.path[1].longitude]],
     }));
     console.log(optPropData);
+
+
+    
+    totalMicros = otherData.path[data.path.length-1].totalmicros/1000000;
+    totalMicros = Math.round(totalMicros * 100) / 100;
+    setOptPropData((prevState) => ({
+      ...prevState,
+      AStrTime: totalMicros
+    }))
+    // A star gives three nodes with end being target
+
     document.getElementById('pathModal').showModal()
   }
 
@@ -261,15 +278,14 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              {/* <span className="label-text">Search By</span>
-              <span className="label-text-alt">Priority</span> */}
+              <span className="label-text">Search By</span>
+              <span className="label-text-alt">Priority</span>
             </div>
-            <select className="select select-bordered" onChange={handlePriceAreaChange}>
+            {/* <select className="select select-bordered" onChange={handlePriceAreaChange}>
               <option disabled selected>Search By</option>
-              {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
               <option value="Price">Price</option>
               <option value="Size">Size</option>
-            </select>
+            </select> */}
             <select className="select select-bordered" onChange={handleAlgoChange}>
               <option disabled selected>Algorithm</option>
               {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
@@ -279,7 +295,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
           </label>
         </div>
         {/* Conditionnaly render below based on if user picks sort by price or size */}
-        <div class="w-[17vw]">
+        <div class="w-[17vw] mb-[15px]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
               {/* <span className="label-text">Target Price/Size</span>
