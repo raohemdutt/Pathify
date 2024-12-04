@@ -1,0 +1,10 @@
+/Users/kaimcfarlane/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_MAKE_PROGRAM=/Users/kaimcfarlane/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -DCMAKE_CXX_COMPILER=/usr/bin/indent -DCMAKE_TOOLCHAIN_FILE=/Users/joshfix/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja -S /Users/kaimcfarlane/Pathify/ClionImplementation -B /Users/kaimcfarlane/Pathify/ClionImplementation/cmake-build-default
+CMake Error at /Users/kaimcfarlane/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:152 (message):
+  Could not find toolchain file:
+  /Users/joshfix/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (project)
+
+
+CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+-- Configuring incomplete, errors occurred!

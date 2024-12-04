@@ -36,7 +36,7 @@ std::vector<Property> dijkstras(double startLat, double startLon, double targetP
   finalPath.push_back(minNode.property);
 
   //Create Adjacency List with the int/id corresponding to the from id and the other pair having the to id and the Node
-  std::map<int, std::vector<std::pair<int, double>>> adjacencyList;
+  std::map<int, std::vector<std::pair<int, double> > > adjacencyList;
   for(int i = 0; i < allNodes.size(); i++) {
     for(int j = 0; j < allNodes.size(); j++) {
       std::pair<int, double> pairs;
