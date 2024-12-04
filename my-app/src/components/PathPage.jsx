@@ -38,10 +38,10 @@ export default function PathPage({curIdx, setCurIdx, curLocation, optPropData, s
                 <div className="card-body">
                         <div className="modal-action flex flex-col justify-center items-center mt-[0] 2xl:mt-[3vw]">
                             <div class="font-medium">
-                                Found an Optimal Property in {curLocation.djk === true ? optPropData.djkTime : optPropData.AStrTime} seconds using {curLocation.djk === true ? "Djkstra's" : "A-Star's"} Algorithm at {optPropData.lat}° Latitude and {optPropData.long}° Longitude 
+                                Found an Optimal Property in {curLocation.djk === true ? optPropData.djkTime : optPropData.AStrTime} seconds and {curLocation.djk === true ? optPropData.djkSpace : optPropData.AStrSpace} bytes using {curLocation.djk === true ? "Djkstra's" : "A-Star's"} Algorithm at {optPropData.lat}° Latitude and {optPropData.long}° Longitude 
                             </div>
                             <div class="font-semibold" style={{color: "#fb3030", margin: "inherit"}}>
-                                {curLocation.djk === true ? "A-Star's" : "Djkstra's"} Algorithm took {curLocation.djk === true ? optPropData.AStrTime : optPropData.djkTime} seconds
+                                {curLocation.djk === true ? "A-Star's" : "Djkstra's"} Algorithm took {curLocation.djk === true ? optPropData.AStrTime : optPropData.djkTime} seconds and {curLocation.djk === true ? optPropData.AStrSpace : optPropData.djkSpace} bytes
                             </div>
                         </div>
                         {/* Render MapWithRoute for the current node */}

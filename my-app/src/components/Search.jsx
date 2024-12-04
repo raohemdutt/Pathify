@@ -87,6 +87,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
 
   const handleAlgoChange = (event) => {
     const value = event.target.value;
+    console.log("CURRENT VALUE: " + value);
     if(value === "Djk") {
       setCurLocation((prevState) => ({
         ...prevState,
@@ -193,26 +194,63 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     setLoading(false)
     let totalMicros = data.path[data.path.length-1].totalmicros/1000000;
     totalMicros = Math.round(totalMicros * 100) / 100;
+    console.log("This Total Micros: " + totalMicros);
+
+    let otherTotalMicros = otherData.path[otherData.path.length-1].totalmicros/1000000;
+    otherTotalMicros = Math.round(otherTotalMicros * 100) / 100;
+    console.log("This Other Total Micros: " + otherTotalMicros);
+    
     setOptPropData((prevState) => ({
       ...prevState,
       long: data.path[data.path.length-1].longitude,
       lat: data.path[data.path.length-1].latitude,
-      djkTime: totalMicros,
+      djkSpace: curLocation.djk ? data.path[data.path.length-1].memoryTotal : otherData.path[otherData.path.length-1].memoryTotal,
+      djkTime: curLocation.djk ? totalMicros : otherTotalMicros,
+      AStrSpace: !curLocation.djk ? data.path[otherData.path.length-1].memoryTotal : otherData.path[otherData.path.length-1].memoryTotal,
+      AStrTime: !curLocation.djk ? totalMicros : otherTotalMicros,
+      // djkTime: totalMicros,
       target: 10.00,
       PrevNodes: [[data.path[0].latitude, data.path[0].longitude],[data.path[1].latitude, data.path[1].longitude]],
     }));
-    console.log(optPropData);
-
-
-    
-    totalMicros = otherData.path[data.path.length-1].totalmicros/1000000;
-    totalMicros = Math.round(totalMicros * 100) / 100;
-    setOptPropData((prevState) => ({
-      ...prevState,
-      AStrTime: totalMicros
-    }))
-    // A star gives three nodes with end being target
-
+    // if(curLocation.djk) {
+    //   console.log("DJK is set first!")
+    //   setOptPropData((prevState) => ({
+    //     ...prevState,
+    //     djkSpace: data.path[data.path.length-1].memoryTotal,
+    //     djkTime: totalMicros,
+    //   }));
+    // }
+    // else {
+    //   setOptPropData((prevState) => ({
+    //     ...prevState,
+    //     AStrSpace: data.path[data.path.length-1].memoryTotal,
+    //     AStrTime: totalMicros,
+    //   }));
+    // }
+    // console.log("DJK Time set to: " + optPropData.djkTime);
+    // // console.log(optPropData);
+    // let otherTotalMicros = otherData.path[otherData.path.length-1].totalmicros/1000000;
+    // otherTotalMicros = Math.round(totalMicros * 100) / 100;
+    // console.log("Other Total Micros: " + totalMicros);
+    // if(curLocation.djk === false) {
+    //   console.log("DJK Algo is OTHER");
+    //   setOptPropData((prevState) => ({
+    //     ...prevState,
+    //     djkSpace: otherData.path[otherData.path.length-1].memoryTotal,
+    //     djkTime: otherTotalMicros,
+    //   }));
+    // }
+    // else {
+    //   console.log("AStr is OTHER")
+    //   setOptPropData((prevState) => ({
+    //     ...prevState,
+    //     AStrSpace: otherData.path[otherData.path.length-1].memoryTotal,
+    //     AStrTime: otherTotalMicros,
+    //   }));
+    // }
+    // console.log("STR Time set to: " + optPropData.AStrTime);
+    // // A star gives three nodes with end being target
+    // console.log(optPropData);
     document.getElementById('pathModal').showModal()
   }
 
