@@ -19,11 +19,12 @@ Created by Hemdutt Rao, Kai McFarlane, and Joshua Brunk
 4) Run in the my-app directory ```npm run start``` inside the my-app directory to start the front-end server on port [3000](http://localhost:3000/).
 
 ## Setting Up Backend 🛜
-5) Open up a new project in CLion named Untitled2.
-6) Copy and Paste all contents of the CLionImplementation folder in the repsotory into the main directory of your CLion project.
-7) If asked, ```overwrite?```, click ```overwrite all```.
-8) Hit green arrow in top right to run the server.
-9) If error appears due to Asio package, to right hit debug, and hit install Asio with vcpg. This will allow CROW to run smoothly on port [8008](http://0.0.0.0:8008/).
+** 5)Open up the Clion Implementation folder, CLION should auto config everything using the cmakeList.txt. Then click the run button and it will say that you don't have Asio installed. Click Fix in the command line and click install with new vcpkg and it should install and now run. We have had numerous issues with clion actually working properly though so if it doesn't do the instructions below. **
+6) Open up a new project in CLion named Untitled2.
+7) Copy and Paste all contents of the CLionImplementation folder in the repsotory into the main directory of your CLion project.
+8) If asked, ```overwrite?```, click ```overwrite all```.
+9) Hit green arrow in top right to run the server.
+10) If error appears due to Asio package, to right hit debug, and hit install Asio with vcpg. This will allow CROW to run smoothly on port [8008](http://0.0.0.0:8008/).
 Once all these steps are completed, Pathify is ready to go 🚀.
 
 # Important Application Run Info ‼️
