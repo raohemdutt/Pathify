@@ -3,7 +3,7 @@ DSA Project 3, Team 27
 
 Created by Hemdutt Rao, Kai McFarlane, and Joshua Brunk
 
-# Video Feature Overview
+## Video Feature Overview
 https://youtu.be/xJs6t-H56fE
 
 # How To Run Pathify Locally 👨‍💻
