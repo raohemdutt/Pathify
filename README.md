@@ -18,7 +18,7 @@ Created by Hemdutt Rao, Kai McFarlane, and Joshua Brunk
 6) Copy and Paste all contents of the CLionImplementation folder in the repsotory into the main directory of your CLion project.
 7) If asked, ```overwrite?```, click ```overwrite all```.
 8) Hit green arrow in top right to run the server.
-9) If error appears due to Asio package, to right hit debug, and hit install Asio with vcpg. This will allow CROW to run smoothly.
+9) If error appears due to Asio package, to right hit debug, and hit install Asio with vcpg. This will allow CROW to run smoothly on port [8008](http://0.0.0.0:8008/).
 Once all these steps are completed, Pathify is ready to go 🚀.
 
 # Important Application Run Info ‼️
