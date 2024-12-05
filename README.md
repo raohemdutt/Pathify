@@ -24,6 +24,6 @@ Once all these steps are completed, Pathify is ready to go 🚀.
 # Important Application Run Info ‼️
 * Our API information and ports are already connected, so altering said ports in the backend or front-end file will mean it will need updates everywhere.
 * Every User will have there own CMAKE file upon running the server. If you want to update this file, do not commit your changes to the debug folder to the repository.
-* We use the url of our server for our request paramters, so changes to that url when fetching from the front-end will change the ouput of the server
+* We use the url of our server for our request paramters, so changes to that url when fetching from the front-end will change the ouput of the server.
 
 
