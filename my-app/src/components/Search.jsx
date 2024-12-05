@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 export default function Search({setPathCurIdx, curLocation, setCurLocation, optPropData, setOptPropData}) {
   const [isLoading, setLoading] = useState(false);
 
-  // When submit button clicked setCurlocation Info
+  // Handles User Longitude Input
   function setLongLat() {
     let longs = [];
     let lats = [];
@@ -21,6 +21,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     return output;
   }
 
+  // Handles User Price Input
   function setPrice() {
     let prices = [];
     for(let i=0; i<=10000000; i+=10000) {
@@ -31,6 +32,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     return prices;
   }
 
+  // Handles User Area Input
   function setArea() {
     let area = [];
     for(let i=0; i<=100000; i+=250) {
@@ -41,10 +43,12 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     return area;
   }
 
+  // Handles rendering price or area
   function renderPriceArea() {
     return curLocation.priceBased ? setPrice() : setArea();
   }
 
+  // Function to handle Price or Area Changes (for testing purposes)
   // const handlePriceAreaChange = (event) => {
   //   const value = event.target.value;
   //   if(value === "Price") {
@@ -61,6 +65,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
   //   }
   // }
 
+  // Handles Latitude User Input
   const handleLatChange = (event) => {
     const value = event.target.value;
     setCurLocation((prevState) => ({
@@ -69,6 +74,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     }));
   }
 
+  // Handles Longitude User Input
   const handleLongChange = (event) => {
     const value = event.target.value;
     setCurLocation((prevState) => ({
@@ -77,6 +83,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     }));
   }
 
+  // Handles Price and Area User Input
   const handlePriceAreaValChange = (event) => {
     const value = event.target.value;
     setCurLocation((prevState) => ({
@@ -85,6 +92,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     }));
   }
 
+  // Handles Algorithm User Input
   const handleAlgoChange = (event) => {
     const value = event.target.value;
     console.log("CURRENT VALUE: " + value);
@@ -102,6 +110,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     }
   }
 
+  // Handles Direction User Input
   const handleDirChange = (event, dir) => {
     // const value = event.target.value;
     if(dir === "North") {
@@ -170,36 +179,19 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
     }
   }
 
+  // Handles Submit Button Click (Calls Searches from C++ Server and updates Front End)
   const findPathButton = async () => {
     setLoading(true);
     setPathCurIdx(0);
-    console.log("running fetch!")
-    /*
-    attempted to add client side but decided to just implement this in the server
-    if(curLocation.target.includes("$")){
-      console.log("erasing");
-      curLocation.target.replace("$","");
-    }*/
-    // Should put laoding wheel here
     const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${curLocation.djk ? "d" : "a"}`);
     const data = await response.json();
     let otherRes = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${!curLocation.djk ? "d" : "a"}`);
     const otherData = await otherRes.json();
-    // A star gives three nodes with end being target
-    console.log("Target Data:")
-    console.log(data)
-    console.log("Other Data:")
-    console.log(otherData)
-    console.log("Data on line 178 should be above this line");
     setLoading(false)
     let totalMicros = data.path[data.path.length-1].totalmicros/1000000;
     totalMicros = Math.round(totalMicros * 100) / 100;
-    console.log("This Total Micros: " + totalMicros);
-
     let otherTotalMicros = otherData.path[otherData.path.length-1].totalmicros/1000000;
     otherTotalMicros = Math.round(otherTotalMicros * 100) / 100;
-    console.log("This Other Total Micros: " + otherTotalMicros);
-    
     setOptPropData((prevState) => ({
       ...prevState,
       long: data.path[data.path.length-1].longitude,
@@ -208,61 +200,19 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
       djkTime: curLocation.djk ? totalMicros : otherTotalMicros,
       AStrSpace: !curLocation.djk ? data.path[otherData.path.length-1].memoryTotal : otherData.path[otherData.path.length-1].memoryTotal,
       AStrTime: !curLocation.djk ? totalMicros : otherTotalMicros,
-      // djkTime: totalMicros,
       target: 10.00,
       PrevNodes: [[data.path[0].latitude, data.path[0].longitude],[data.path[1].latitude, data.path[1].longitude]],
     }));
-    // if(curLocation.djk) {
-    //   console.log("DJK is set first!")
-    //   setOptPropData((prevState) => ({
-    //     ...prevState,
-    //     djkSpace: data.path[data.path.length-1].memoryTotal,
-    //     djkTime: totalMicros,
-    //   }));
-    // }
-    // else {
-    //   setOptPropData((prevState) => ({
-    //     ...prevState,
-    //     AStrSpace: data.path[data.path.length-1].memoryTotal,
-    //     AStrTime: totalMicros,
-    //   }));
-    // }
-    // console.log("DJK Time set to: " + optPropData.djkTime);
-    // // console.log(optPropData);
-    // let otherTotalMicros = otherData.path[otherData.path.length-1].totalmicros/1000000;
-    // otherTotalMicros = Math.round(totalMicros * 100) / 100;
-    // console.log("Other Total Micros: " + totalMicros);
-    // if(curLocation.djk === false) {
-    //   console.log("DJK Algo is OTHER");
-    //   setOptPropData((prevState) => ({
-    //     ...prevState,
-    //     djkSpace: otherData.path[otherData.path.length-1].memoryTotal,
-    //     djkTime: otherTotalMicros,
-    //   }));
-    // }
-    // else {
-    //   console.log("AStr is OTHER")
-    //   setOptPropData((prevState) => ({
-    //     ...prevState,
-    //     AStrSpace: otherData.path[otherData.path.length-1].memoryTotal,
-    //     AStrTime: otherTotalMicros,
-    //   }));
-    // }
-    // console.log("STR Time set to: " + optPropData.AStrTime);
-    // // A star gives three nodes with end being target
-    // console.log(optPropData);
     document.getElementById('pathModal').showModal()
   }
 
+  // Handles Loading Screen while API fetches data
   const callLoadingScreen = () => {
     return <div class="fixed inset-0 flex items-center justify-center ">
               <span className="w-[8vw] loading loading-spinner loading-lg text-white"></span>
           </div>
   }
 
-  console.log(curLocation);
-
-  // For some reason removing labe causes err, may have to use desginated Daisy UI component
   return (
     <>
       {isLoading ? 
@@ -273,10 +223,11 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
         <div class="w-[17vw]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              {/* <span className="label-text">Start Location</span> */}
+            <span className="label-text">Start Location Longitude</span>
               <span className="label-text-alt">Coordinates Only</span>
             </div>
             <input type="text" placeholder="Longitude" className="input input-bordered w-full max-w-xs" onChange={handleLongChange} />
+            {/* Code for Testing Below */}
             {/* <select className="select select-bordered" onChange={handleLongChange}>
               <option disabled selected>Pick Longitude</option>
               {setLongLat()[0]}
@@ -296,14 +247,10 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
           </div>
           </section>
             <div className="label">
-              {/* <span className="label-text">Start Location</span> */}
+              <span className="label-text">Start Location Latitude</span>
               <span className="label-text-alt">Coordinates Only</span>
             </div>
             <input type="text" placeholder="Latitude" className="input input-bordered w-full max-w-xs" onChange={handleLatChange} />
-            {/* <select className="select select-bordered" onChange={handleLatChange}>
-              <option disabled selected>Pick Latitude</option>
-              {setLongLat()[1]}
-            </select> */}
             <section>
             <div className="form-control">
             <label className="label cursor-pointer">
@@ -326,6 +273,7 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
               <span className="label-text">Search By</span>
               <span className="label-text-alt">Price</span>
             </div>
+            {/* Code for testing below */}
             {/* <select className="select select-bordered" onChange={handlePriceAreaChange}>
               <option disabled selected>Search By</option>
               <option value="Price">Price</option>
@@ -333,26 +281,23 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
             </select> */}
             <select className="select select-bordered" onChange={handleAlgoChange}>
               <option disabled selected>Algorithm</option>
-              {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
               <option value="Djk">Djkstras</option>
               <option value="A-Star">A-Star</option>
             </select>
           </label>
         </div>
-        {/* Conditionnaly render below based on if user picks sort by price or size */}
         <div class="w-[17vw] mb-[15px]">
           <label className="form-control w-full max-w-xs">
             <div className="label">
+              {/* Code for testing below */}
               {/* <span className="label-text">Target Price/Size</span>
               <span className="label-text-alt">$/sq. ft</span> */}
             </div>
             <div className="label">
-              {/* <span className="label-text">Start Location</span> */}
               <span className="label-text-alt">Optimal Value</span>
             </div>
             <select className="select select-bordered"  onChange={handlePriceAreaValChange}>
               <option disabled selected>Pick Target {curLocation.priceBased === true ? "Price" : "Area"}</option>
-              {/* For loop react component with options, should just pass in I think text to component, create state for this hashmap of text as well */}
               {renderPriceArea()}
             </select>
           </label>
