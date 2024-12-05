@@ -183,9 +183,9 @@ export default function Search({setPathCurIdx, curLocation, setCurLocation, optP
   const findPathButton = async () => {
     setLoading(true);
     setPathCurIdx(0);
-    const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${curLocation.djk ? "d" : "a"}`);
+    const response = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${curLocation.djk}`);
     const data = await response.json();
-    let otherRes = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${!curLocation.djk ? "d" : "a"}`);
+    let otherRes = await fetch(`http://0.0.0.0:8008/process?lat=${curLocation.lat}&lng=${curLocation.long}&price=${curLocation.target}&type=${!curLocation.djk}`);
     const otherData = await otherRes.json();
     setLoading(false)
     let totalMicros = data.path[data.path.length-1].totalmicros/1000000;
