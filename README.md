@@ -12,11 +12,11 @@ Created by Hemdutt Rao, Kai McFarlane, and Joshua Brunk
 
 ## Initial Setup (Using CLion with cMake) 📖
 1) Clone our repositry to your local machine.
-2) Run ```npm install``` to install necessary packages to run code.
+2) After cding into the my-app directory Run ```npm install``` to install necessary packages to run code.
 3) Install CLion on your device.
 
 ## Setting Up Front End 🎨
-4) Run ```npm run start``` inside the my-app directory to start the front-end server on port [3000](http://localhost:3000/).
+4) Run in the my-app directory ```npm run start``` inside the my-app directory to start the front-end server on port [3000](http://localhost:3000/).
 
 ## Setting Up Backend 🛜
 5) Open up a new project in CLion named Untitled2.
